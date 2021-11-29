@@ -1,7 +1,7 @@
 /*
 	NAME: Tribal Wars Scripts Library
-	VERSION: 0.2.8 (beta version)
-	LAST UPDATED AT: 2021-09-30
+	VERSION: 0.3.0 (beta version)
+	LAST UPDATED AT: 2021-11-29
 	AUTHOR: RedAlert (RedAlert#9859)
 	AUTHOR URL: https://twscripts.dev/
 	CONTRIBUTORS: Shinko to Kuma & Sass
@@ -589,8 +589,8 @@ if (typeof window.twSDK === 'undefined') {
 			if (LAST_UPDATED_TIME !== null) {
 				if (Date.parse(new Date()) >= LAST_UPDATED_TIME + TIME_INTERVAL) {
 					const response = await jQuery.ajax({ url: this.buildingInfoInterface });
-					unitInfo = this.xml2json(jQuery(response));
-					localStorage.setItem('buildings_info', JSON.stringify(unitInfo));
+					buildingsInfo = this.xml2json(jQuery(response));
+					localStorage.setItem('buildings_info', JSON.stringify(buildingsInfo));
 					localStorage.setItem('buildings_info_last_updated', Date.parse(new Date()));
 				} else {
 					buildingsInfo = JSON.parse(localStorage.getItem('buildings_info'));
@@ -757,6 +757,7 @@ if (typeof window.twSDK === 'undefined') {
 
 			if (jQuery(`#${id}`).length < 1) {
 				jQuery('#contentContainer').prepend(content);
+				jQuery('#mobileContent').prepend(content);
 			} else {
 				jQuery(`.${mainClass}-body`).html(body);
 			}
