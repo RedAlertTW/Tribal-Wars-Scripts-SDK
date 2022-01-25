@@ -1,7 +1,7 @@
 /*
 	NAME: Tribal Wars Scripts Library
-	VERSION: 0.3.1 (beta version)
-	LAST UPDATED AT: 2022-01-14
+	VERSION: 0.3.2 (beta version)
+	LAST UPDATED AT: 2022-01-20
 	AUTHOR: RedAlert (RedAlert#9859)
 	AUTHOR URL: https://twscripts.dev/
 	CONTRIBUTORS: Shinko to Kuma & Sass
@@ -694,6 +694,13 @@ if (typeof window.twSDK === 'undefined') {
 		},
 		isWatchTowerWorld: function () {
 			return 'watchtower' in this.buildings;
+		},
+		loadJS: function (url, callback) {
+			let scriptTag = document.createElement('script');
+			scriptTag.src = url;
+			scriptTag.onload = callback;
+			scriptTag.onreadystatechange = callback;
+			document.body.appendChild(scriptTag);
 		},
 		redirectTo: function (location) {
 			window.location.assign(game_data.link_base_pure + location);
