@@ -1,7 +1,7 @@
 /*
 	NAME: Tribal Wars Scripts Library
-	VERSION: 0.3.4 (beta version)
-	LAST UPDATED AT: 2022-02-11
+	VERSION: 0.3.5 (beta version)
+	LAST UPDATED AT: 2022-02-18
 	AUTHOR: RedAlert (RedAlert#9859)
 	AUTHOR URL: https://twscripts.dev/
 	CONTRIBUTORS: Shinko to Kuma & Sass
@@ -577,6 +577,10 @@ if (typeof window.twSDK === 'undefined') {
 			const coordParts = coord.split('|');
 			return coordParts[1].charAt(0) + coordParts[0].charAt(0);
 		},
+		getCoordFromString: function (string) {
+			if (!string) return [];
+			return string.match(this.coordsRegex)[0];
+		},
 		getGameFeatures: function () {
 			const { Premium, FarmAssistent, AccountManager } = game_data.features;
 			const isPA = Premium.active;
@@ -598,8 +602,19 @@ if (typeof window.twSDK === 'undefined') {
 		getKeyByValue: function (object, value) {
 			return Object.keys(object).find((key) => object[key] === value);
 		},
+		getLandingTimeFromArrivesIn: function (arrivesIn) {
+			const currentServerTime = this.getServerDateTimeObject();
+			const [hours, minutes, seconds] = arrivesIn.split(':');
+			const totalSeconds = +hours * 3600 + +minutes * 60 + +seconds;
+			const arrivalDateTime = new Date(currentServerTime.getTime() + totalSeconds * 1000);
+			return arrivalDateTime;
+		},
 		getParameterByName: function (name, url = window.location.href) {
 			return new URL(url).searchParams.get(name);
+		},
+		getRelativeImagePath: function (url) {
+			const urlParts = url.split('/');
+			return `/${urlParts[5]}/${urlParts[6]}/${urlParts[7]}`;
 		},
 		getServerDateTimeObject: function () {
 			const serverTime = jQuery('#serverTime').text();
@@ -882,6 +897,9 @@ if (typeof window.twSDK === 'undefined') {
 				seconds.toString().padStart(2, '0')
 			);
 		},
+		setUpdateProgress: function (elementToUpdate, valueToSet) {
+			jQuery(elementToUpdate).text(valueToSet);
+		},
 		sortArrayOfObjectsByKey: function (array, key) {
 			return array.sort((a, b) => b[key] - a[key]);
 		},
@@ -927,12 +945,18 @@ if (typeof window.twSDK === 'undefined') {
 				return this.translations['en_DK'][string];
 			}
 		},
+		updateProgress: function (elementToUpate, itemsLength, index) {
+			jQuery(elementToUpate).text(`${index}/${itemsLength}`);
+		},
 		updateProgressBar: function (index, total) {
 			jQuery('#progress').css('width', `${((index + 1) / total) * 100}%`);
 			jQuery('.count').text(`${index + 1}/${total}`);
 			if (index + 1 == total) {
 				jQuery('#progressbar').fadeOut(1000);
 			}
+		},
+		toggleUploadButtonStatus: function (elementToToggle) {
+			jQuery(elementToToggle).attr('disabled', (i, v) => !v);
 		},
 		xml2json: function ($xml) {
 			let data = {};
