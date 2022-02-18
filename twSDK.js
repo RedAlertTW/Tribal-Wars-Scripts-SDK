@@ -1,7 +1,7 @@
 /*
 	NAME: Tribal Wars Scripts Library
-	VERSION: 0.3.2 (beta version)
-	LAST UPDATED AT: 2022-01-20
+	VERSION: 0.3.4 (beta version)
+	LAST UPDATED AT: 2022-02-11
 	AUTHOR: RedAlert (RedAlert#9859)
 	AUTHOR URL: https://twscripts.dev/
 	CONTRIBUTORS: Shinko to Kuma & Sass
@@ -24,6 +24,7 @@ if (typeof window.twSDK === 'undefined') {
 		allowedModes: [],
 		isDebug: false,
 		enableCountApi: false,
+		delayBetweenRequests: 200,
 		// helper variables
 		market: game_data.market,
 		units: game_data.units,
@@ -516,7 +517,7 @@ if (typeof window.twSDK === 'undefined') {
 		) {
 			var numDone = 0;
 			var lastRequestTime = 0;
-			var minWaitTime = 200; // ms between requests
+			var minWaitTime = this.delayBetweenRequests; // ms between requests
 			loadNext();
 			function loadNext() {
 				if (numDone == urls.length) {
@@ -548,6 +549,29 @@ if (typeof window.twSDK === 'undefined') {
 					});
 			}
 		},
+		getBuildingsInfo: async function () {
+			const TIME_INTERVAL = 60 * 60 * 1000 * 24 * 365; // fetch config only once since they don't change
+			const LAST_UPDATED_TIME = localStorage.getItem('buildings_info_last_updated') ?? 0;
+			let buildingsInfo = [];
+
+			if (LAST_UPDATED_TIME !== null) {
+				if (Date.parse(new Date()) >= LAST_UPDATED_TIME + TIME_INTERVAL) {
+					const response = await jQuery.ajax({ url: this.buildingInfoInterface });
+					buildingsInfo = this.xml2json(jQuery(response));
+					localStorage.setItem('buildings_info', JSON.stringify(buildingsInfo));
+					localStorage.setItem('buildings_info_last_updated', Date.parse(new Date()));
+				} else {
+					buildingsInfo = JSON.parse(localStorage.getItem('buildings_info'));
+				}
+			} else {
+				const response = await jQuery.ajax({ url: this.buildingInfoInterface });
+				buildingsInfo = this.xml2json(jQuery(response));
+				localStorage.setItem('buildings_info', JSON.stringify(unitInfo));
+				localStorage.setItem('buildings_info_last_updated', Date.parse(new Date()));
+			}
+
+			return buildingsInfo;
+		},
 		getContinentByCoord: function (coord) {
 			if (!coord) return '';
 			const coordParts = coord.split('|');
@@ -571,6 +595,9 @@ if (typeof window.twSDK === 'undefined') {
 			});
 			return itemIds;
 		},
+		getKeyByValue: function (object, value) {
+			return Object.keys(object).find((key) => object[key] === value);
+		},
 		getParameterByName: function (name, url = window.location.href) {
 			return new URL(url).searchParams.get(name);
 		},
@@ -580,29 +607,6 @@ if (typeof window.twSDK === 'undefined') {
 			const [day, month, year] = serverDate.split('/');
 			const serverTimeFormatted = year + '-' + month + '-' + day + ' ' + serverTime;
 			return new Date(serverTimeFormatted);
-		},
-		getBuildingsInfo: async function () {
-			const TIME_INTERVAL = 60 * 60 * 1000 * 24 * 365; // fetch config only once since they don't change
-			const LAST_UPDATED_TIME = localStorage.getItem('buildings_info_last_updated') ?? 0;
-			let buildingsInfo = [];
-
-			if (LAST_UPDATED_TIME !== null) {
-				if (Date.parse(new Date()) >= LAST_UPDATED_TIME + TIME_INTERVAL) {
-					const response = await jQuery.ajax({ url: this.buildingInfoInterface });
-					buildingsInfo = this.xml2json(jQuery(response));
-					localStorage.setItem('buildings_info', JSON.stringify(buildingsInfo));
-					localStorage.setItem('buildings_info_last_updated', Date.parse(new Date()));
-				} else {
-					buildingsInfo = JSON.parse(localStorage.getItem('buildings_info'));
-				}
-			} else {
-				const response = await jQuery.ajax({ url: this.buildingInfoInterface });
-				buildingsInfo = this.xml2json(jQuery(response));
-				localStorage.setItem('buildings_info', JSON.stringify(unitInfo));
-				localStorage.setItem('buildings_info_last_updated', Date.parse(new Date()));
-			}
-
-			return buildingsInfo;
 		},
 		getVillageBuildings: function () {
 			const buildings = game_data.village.buildings;
