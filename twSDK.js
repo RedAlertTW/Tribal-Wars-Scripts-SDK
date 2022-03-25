@@ -1,7 +1,7 @@
 /*
 	NAME: Tribal Wars Scripts Library
-	VERSION: 0.3.5 (beta version)
-	LAST UPDATED AT: 2022-02-18
+	VERSION: 0.3.6 (beta version)
+	LAST UPDATED AT: 2022-03-25
 	AUTHOR: RedAlert (RedAlert#9859)
 	AUTHOR URL: https://twscripts.dev/
 	CONTRIBUTORS: Shinko to Kuma & Sass
@@ -828,7 +828,7 @@ if (typeof window.twSDK === 'undefined') {
 					<a class="popup_box_close custom-close-button" href="#">&nbsp;</a>
 				</div>
 				<style>
-					.${mainClass} { position: fixed; top: 10vw; right: 10vw; z-index: 100; border: 1px solid #7d510f; padding: 10px; width: ${
+					.${mainClass} { position: fixed; top: 10vw; right: 10vw; z-index: 99999; border: 2px solid #7d510f; border-radius: 10px; padding: 10px; width: ${
 				width ?? '360px'
 			}; overflow-y: auto; padding: 10px; background: #e3d5b3 url('/graphic/index/main_bg.jpg') scroll right top repeat; }
 					.${mainClass} * { box-sizing: border-box; }
