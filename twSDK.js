@@ -1,11 +1,11 @@
 /*
 	NAME: Tribal Wars Scripts Library
-	VERSION: 0.3.7 (beta version)
+	VERSION: 0.3.8 (beta version)
 	LAST UPDATED AT: 2022-03-30
 	AUTHOR: RedAlert (RedAlert#9859)
 	AUTHOR URL: https://twscripts.dev/
 	CONTRIBUTORS: Shinko to Kuma & Sass
-	HELP: #
+	HELP: https://github.com/RedAlertTW/Tribal-Wars-Scripts-SDK
 	STATUS: Work in progress. Not finished 100%.
 
 	This software is provided 'as-is', without any express or implied warranty.
@@ -36,46 +36,61 @@ if (typeof window.twSDK === 'undefined') {
 		worldDataVillages: 'map/village.txt',
 		worldDataPlayers: 'map/player.txt',
 		worldDataTribes: 'map/ally.txt',
+		// constants
 		buildingPoints: {
-			Headquarters: [
+			main: [
 				10, 2, 2, 3, 4, 4, 5, 6, 7, 9, 10, 12, 15, 18, 21, 26, 31, 37, 44, 53, 64, 77, 92, 110, 133, 159, 191,
 				229, 274, 330,
 			],
-			Barracks: [
+			barracks: [
 				16, 3, 4, 5, 5, 7, 8, 9, 12, 14, 16, 20, 24, 28, 34, 42, 49, 59, 71, 85, 102, 123, 147, 177, 212,
 			],
-			Stable: [20, 4, 5, 6, 6, 9, 10, 12, 14, 17, 21, 25, 29, 36, 43, 51, 62, 74, 88, 107],
-			Garage: [24, 5, 6, 6, 9, 10, 12, 14, 17, 21, 25, 29, 36, 43, 51],
-			Church: [10, 2, 2],
-			'First Church': [10],
-			'Watch Tower': [42, 8, 10, 13, 14, 18, 20, 25, 31, 36, 43, 52, 62, 75, 90, 108, 130, 155, 186, 224],
-			Academy: [512],
-			Smithy: [19, 4, 4, 6, 6, 8, 10, 11, 14, 16, 20, 23, 28, 34, 41, 49, 58, 71, 84, 101],
-			Place: [0],
-			Statue: [24],
-			Market: [10, 2, 2, 3, 4, 4, 5, 6, 7, 9, 10, 12, 15, 18, 21, 26, 31, 37, 44, 53, 64, 77, 92, 110, 133],
-			'Timber camp': [
+			stable: [20, 4, 5, 6, 6, 9, 10, 12, 14, 17, 21, 25, 29, 36, 43, 51, 62, 74, 88, 107],
+			garage: [24, 5, 6, 6, 9, 10, 12, 14, 17, 21, 25, 29, 36, 43, 51],
+			chuch: [10, 2, 2],
+			church_f: [10],
+			watchtower: [42, 8, 10, 13, 14, 18, 20, 25, 31, 36, 43, 52, 62, 75, 90, 108, 130, 155, 186, 224],
+			snob: [512],
+			smith: [19, 4, 4, 6, 6, 8, 10, 11, 14, 16, 20, 23, 28, 34, 41, 49, 58, 71, 84, 101],
+			place: [0],
+			statue: [24],
+			market: [10, 2, 2, 3, 4, 4, 5, 6, 7, 9, 10, 12, 15, 18, 21, 26, 31, 37, 44, 53, 64, 77, 92, 110, 133],
+			wood: [
 				6, 1, 2, 1, 2, 3, 3, 3, 5, 5, 6, 8, 8, 11, 13, 15, 19, 22, 27, 32, 38, 46, 55, 66, 80, 95, 115, 137,
 				165, 198,
 			],
-			'Clay pit': [
+			stone: [
 				6, 1, 2, 1, 2, 3, 3, 3, 5, 5, 6, 8, 8, 11, 13, 15, 19, 22, 27, 32, 38, 46, 55, 66, 80, 95, 115, 137,
 				165, 198,
 			],
-			'Iron mine': [
+			iron: [
 				6, 1, 2, 1, 2, 3, 3, 3, 5, 5, 6, 8, 8, 11, 13, 15, 19, 22, 27, 32, 38, 46, 55, 66, 80, 95, 115, 137,
 				165, 198,
 			],
-			Farm: [
+			farm: [
 				5, 1, 1, 2, 1, 2, 3, 3, 3, 5, 5, 6, 8, 8, 11, 13, 15, 19, 22, 27, 32, 38, 46, 55, 66, 80, 95, 115, 137,
 				165,
 			],
-			Warehouse: [
+			storage: [
 				6, 1, 2, 1, 2, 3, 3, 3, 5, 5, 6, 8, 8, 11, 13, 15, 19, 22, 27, 32, 38, 46, 55, 66, 80, 95, 115, 137,
 				165, 198,
 			],
-			'Hiding place': [5, 1, 1, 2, 1, 2, 3, 3, 3, 5],
-			Wall: [8, 2, 2, 2, 3, 3, 4, 5, 5, 7, 9, 9, 12, 15, 17, 20, 25, 29, 36, 43],
+			hide: [5, 1, 1, 2, 1, 2, 3, 3, 3, 5],
+			wall: [8, 2, 2, 2, 3, 3, 4, 5, 5, 7, 9, 9, 12, 15, 17, 20, 25, 29, 36, 43],
+		},
+		unitsFarmSpace: {
+			spear: 1,
+			sword: 1,
+			axe: 1,
+			archer: 1,
+			spy: 2,
+			light: 4,
+			marcher: 5,
+			heavy: 6,
+			ram: 5,
+			catapult: 8,
+			knight: 10,
+			snob: 100,
 		},
 
 		// internal methods
