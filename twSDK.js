@@ -1,10 +1,10 @@
 /*
 	NAME: Tribal Wars Scripts Library
-	VERSION: 0.3.8 (beta version)
-	LAST UPDATED AT: 2022-03-30
+	VERSION: 0.4.0 (beta version)
+	LAST UPDATED AT: 2022-04-01
 	AUTHOR: RedAlert (RedAlert#9859)
 	AUTHOR URL: https://twscripts.dev/
-	CONTRIBUTORS: Shinko to Kuma & Sass
+	CONTRIBUTORS: Shinko to Kuma; Sass
 	HELP: https://github.com/RedAlertTW/Tribal-Wars-Scripts-SDK
 	STATUS: Work in progress. Not finished 100%.
 
@@ -123,6 +123,48 @@ if (typeof window.twSDK === 'undefined') {
 		},
 
 		// public methods
+		addGlobalStyle: function () {
+			return `
+				/* Table Styling */
+				.ra-table-container { overflow-y: auto; overflow-x: hidden; height: auto; max-height: 400px; }
+				.ra-table th { font-size: 14px; }
+				.ra-table th label { margin: 0; padding: 0; }
+				.ra-table th,
+				.ra-table td { padding: 5px; text-align: center; }
+				.ra-table td a { word-break: break-all; }
+				.ra-table a:focus { color: blue; }
+				.ra-table a.btn:focus { color: #fff; }
+				.ra-table tr:nth-of-type(2n) td { background-color: #f0e2be }
+				.ra-table tr:nth-of-type(2n+1) td { background-color: #fff5da; }
+
+				/* Inputs */
+				.ra-textarea { width: 100%; height: 80px; resize: none; }
+
+				/* Popup */
+				.ra-popup-content { width: 360px; }
+				.ra-popup-content * { box-sizing: border-box; }
+				.ra-popup-content input[type="text"] { padding: 3px; width: 100%; }
+				.ra-popup-content .btn-confirm-yes { padding: 3px !important; }
+				.ra-popup-content label { display: block; margin-bottom: 5px; font-weight: 600; }
+				.ra-popup-content > div { margin-bottom: 15px; }
+				.ra-popup-content > div:last-child { margin-bottom: 0 !important; }
+				.ra-popup-content textarea { width: 100%; height: 100px; resize: none; }
+
+				/* Helpers */
+				.ra-pa5 { padding: 5px !important; }
+				.ra-mt15 { margin-top: 15px !important; }
+				.ra-mb10 { margin-bottom: 10px !important; }
+				.ra-mb15 { margin-bottom: 15px !important; }
+				.ra-tal { text-align: left !important; }
+				.ra-tac { text-align: center !important; }
+				.ra-tar { text-align: right !important; }
+
+				/* Elements */
+				.ra-details { display: block; margin-bottom: 8px; border: 1px solid #603000; padding: 8px; border-radius: 4px; }
+				.ra-details summary { font-weight: 600; }
+				.ra-details p { margin: 10px 0 0 0; padding: 0; }
+			`;
+		},
 		calculateCoinsNeededForNthNoble: function (noble) {
 			return (noble * noble + noble) / 2;
 		},
@@ -438,6 +480,9 @@ if (typeof window.twSDK === 'undefined') {
 			window.location.assign(game_data.link_base_pure + location);
 		},
 		renderBoxWidget: function (body, id, mainClass, customStyle) {
+			const globalStyle = this.addGlobalStyle();
+			const specialContent = this.renderSpecialContent(mainClass);
+
 			const content = `
 				<div class="${mainClass}" id="${id}">
 					<div class="${mainClass}-header">
@@ -446,6 +491,7 @@ if (typeof window.twSDK === 'undefined') {
 					<div class="${mainClass}-body">
 						${body}
 					</div>
+					${specialContent}
 					<div class="${mainClass}-footer">
 						<small>
 							<strong>
@@ -470,42 +516,10 @@ if (typeof window.twSDK === 'undefined') {
 					.${mainClass}-body p { font-size: 14px; }
 					.${mainClass}-body label { display: block; font-weight: 600; margin-bottom: 6px; }
 					
-					/* Table Styling */
-					.ra-table-container { overflow-y: auto; overflow-x: hidden; height: auto; max-height: 400px; }
-					.ra-table th { font-size: 14px; }
-					.ra-table th label { margin: 0; padding: 0; }
-					.ra-table th,
-					.ra-table td { padding: 5px; text-align: center; }
-					.ra-table td a { word-break: break-all; }
-					.ra-table a:focus { color: blue; }
-					.ra-table a.btn:focus { color: #fff; }
-					.ra-table tr:nth-of-type(2n) td { background-color: #f0e2be }
-					.ra-table tr:nth-of-type(2n+1) td { background-color: #fff5da; }
-
-					/* Inputs */
-					.ra-textarea { width: 100%; height: 80px; resize: none; }
-
-					/* Popup */
-					.ra-popup-content { width: 360px; }
-					.ra-popup-content * { box-sizing: border-box; }
-					.ra-popup-content input[type="text"] { padding: 3px; width: 100%; }
-					.ra-popup-content .btn-confirm-yes { padding: 3px !important; }
-					.ra-popup-content label { display: block; margin-bottom: 5px; font-weight: 600; }
-					.ra-popup-content > div { margin-bottom: 15px; }
-					.ra-popup-content > div:last-child { margin-bottom: 0 !important; }
-					.ra-popup-content textarea { width: 100%; height: 100px; resize: none; }
+					${globalStyle}
 
 					/* Custom Style */
 					${customStyle}
-
-					/* Helpers */
-					.ra-pa5 { padding: 5px !important; }
-					.ra-mt15 { margin-top: 15px !important; }
-					.ra-mb10 { margin-bottom: 10px !important; }
-					.ra-mb15 { margin-bottom: 15px !important; }
-					.ra-tal { text-align: left !important; }
-					.ra-tac { text-align: center !important; }
-					.ra-tar { text-align: right !important; }
 				</style>
 			`;
 
@@ -517,6 +531,9 @@ if (typeof window.twSDK === 'undefined') {
 			}
 		},
 		renderFixedWidget: function (body, id, mainClass, customStyle, width) {
+			const globalStyle = this.addGlobalStyle();
+			const specialContent = this.renderSpecialContent(mainClass);
+
 			const content = `
 				<div class="${mainClass}" id="${id}">
 					<div class="${mainClass}-header">
@@ -525,6 +542,7 @@ if (typeof window.twSDK === 'undefined') {
 					<div class="${mainClass}-body">
 						${body}
 					</div>
+					${specialContent}
 					<div class="${mainClass}-footer">
 						<small>
 							<strong>
@@ -546,40 +564,11 @@ if (typeof window.twSDK === 'undefined') {
 			}; overflow-y: auto; padding: 10px; background: #e3d5b3 url('/graphic/index/main_bg.jpg') scroll right top repeat; }
 					.${mainClass} * { box-sizing: border-box; }
 
-					/* Table Styling */
-					.ra-table-container { overflow-y: auto; overflow-x: hidden; height: auto; max-height: 400px; }
-					.ra-table th { font-size: 14px; }
-					.ra-table th,
-					.ra-table td { padding: 5px; text-align: center; }
-					.ra-table td a { word-break: break-all; }
-					.ra-table a:focus { color: blue; }
-					.ra-table a.btn:focus { color: #fff; }
-					.ra-table tr:nth-of-type(2n) td { background-color: #f0e2be }
-					.ra-table tr:nth-of-type(2n+1) td { background-color: #fff5da; }
-
-					/* Popup */
-					.ra-popup-content { width: 360px; }
-					.ra-popup-content * { box-sizing: border-box; }
-					.ra-popup-content input[type="text"] { padding: 3px; width: 100%; }
-					.ra-popup-content .btn-confirm-yes { padding: 3px !important; }
-					.ra-popup-content label { display: block; margin-bottom: 5px; font-weight: 600; }
-					.ra-popup-content > div { margin-bottom: 15px; }
-					.ra-popup-content > div:last-child { margin-bottom: 0 !important; }
-					.ra-popup-content textarea { width: 100%; height: 100px; resize: none; }
+					${globalStyle}
 
 					/* Custom Style */
 					.custom-close-button { right: 0; top: 0; }
 					${customStyle}
-
-					/* Helpers */
-					.ra-fw { width: 100%; }
-					.ra-pa5 { padding: 5px !important; }
-					.ra-mt15 { margin-top: 15px !important; }
-					.ra-mb10 { margin-bottom: 10px !important; }
-					.ra-mb15 { margin-bottom: 15px !important; }
-					.ra-tal { text-align: left !important; }
-					.ra-tac { text-align: center !important; }
-					.ra-tar { text-align: right !important; }
 				</style>
 			`;
 
@@ -594,6 +583,43 @@ if (typeof window.twSDK === 'undefined') {
 			} else {
 				jQuery(`.${mainClass}-body`).html(body);
 			}
+		},
+		renderSpecialContent: function (mainClass) {
+			let specialContent = ``;
+
+			const today = new Date();
+			const dayOfMonth = today.getDate();
+			const month = today.getMonth();
+
+			if (dayOfMonth === 1 && month === 3) {
+				// April 1st
+				specialContent = `
+					<div class="${mainClass}-special-content ra-mb15">
+						<details class="ra-details">
+							<summary>What monster plays the most April Fools’ jokes?</summary>
+							<p>Prankenstein.</p>
+						</details>
+						<details class="ra-details">
+							<summary>Did you hear about the guy who swapped the labels on the pumps at the gas station?</summary>
+							<p>It was an April Fuels' joke.</p>
+						</details>
+						<details class="ra-details">
+							<summary>Why was the donkey annoying his friend?</summary>
+							<p>It was April Mules' Day.</p>
+						</details>
+						<details class="ra-details">
+							<summary>Which day of the year do monkeys like best?</summary>
+							<p>The first of Ape-ril.</p>
+						</details>
+						<details class="ra-details">
+							<summary>Which day is the worst to propose on?</summary>
+							<p>April Fools' Day.</p>
+						</details>
+					</div>
+				`;
+			}
+
+			return specialContent;
 		},
 		scriptInfo: function () {
 			return `[${this.scriptData.name} ${this.scriptData.version}]`;
