@@ -150,6 +150,11 @@ if (typeof window.twSDK === 'undefined') {
 				.ra-popup-content > div:last-child { margin-bottom: 0 !important; }
 				.ra-popup-content textarea { width: 100%; height: 100px; resize: none; }
 
+				/* Elements */
+				.ra-details { display: block; margin-bottom: 8px; border: 1px solid #603000; padding: 8px; border-radius: 4px; }
+				.ra-details summary { font-weight: 600; cursor: pointer; }
+				.ra-details p { margin: 10px 0 0 0; padding: 0; }
+
 				/* Helpers */
 				.ra-pa5 { padding: 5px !important; }
 				.ra-mt15 { margin-top: 15px !important; }
@@ -158,11 +163,6 @@ if (typeof window.twSDK === 'undefined') {
 				.ra-tal { text-align: left !important; }
 				.ra-tac { text-align: center !important; }
 				.ra-tar { text-align: right !important; }
-
-				/* Elements */
-				.ra-details { display: block; margin-bottom: 8px; border: 1px solid #603000; padding: 8px; border-radius: 4px; }
-				.ra-details summary { font-weight: 600; }
-				.ra-details p { margin: 10px 0 0 0; padding: 0; }
 			`;
 		},
 		calculateCoinsNeededForNthNoble: function (noble) {
