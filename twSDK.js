@@ -1,6 +1,6 @@
 /*
 	NAME: Tribal Wars Scripts Library
-	VERSION: 0.4.0 (beta version)
+	VERSION: 0.4.1 (beta version)
 	LAST UPDATED AT: 2022-04-01
 	AUTHOR: RedAlert (RedAlert#9859)
 	AUTHOR URL: https://twscripts.dev/
@@ -91,6 +91,39 @@ if (typeof window.twSDK === 'undefined') {
 			catapult: 8,
 			knight: 10,
 			snob: 100,
+		},
+		resPerHour: {
+			0: 2,
+			1: 30,
+			2: 35,
+			3: 41,
+			4: 47,
+			5: 55,
+			6: 64,
+			7: 74,
+			8: 86,
+			9: 100,
+			10: 117,
+			11: 136,
+			12: 158,
+			13: 184,
+			14: 214,
+			15: 249,
+			16: 289,
+			17: 337,
+			18: 391,
+			19: 455,
+			20: 530,
+			21: 616,
+			22: 717,
+			23: 833,
+			24: 969,
+			25: 1127,
+			26: 1311,
+			27: 1525,
+			28: 1774,
+			29: 2063,
+			30: 2400,
 		},
 
 		// internal methods
