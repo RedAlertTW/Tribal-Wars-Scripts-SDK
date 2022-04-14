@@ -1,7 +1,7 @@
 /*
 	NAME: Tribal Wars Scripts Library
-	VERSION: 0.4.1 (beta version)
-	LAST UPDATED AT: 2022-04-01
+	VERSION: 0.4.2 (beta version)
+	LAST UPDATED AT: 2022-04-14
 	AUTHOR: RedAlert (RedAlert#9859)
 	AUTHOR URL: https://twscripts.dev/
 	CONTRIBUTORS: Shinko to Kuma; Sass
@@ -196,6 +196,20 @@ if (typeof window.twSDK === 'undefined') {
 				.ra-tal { text-align: left !important; }
 				.ra-tac { text-align: center !important; }
 				.ra-tar { text-align: right !important; }
+
+				/* RESPONSIVE */
+				@media (max-width: 480px) {
+					.ra-fixed-widget {
+						position: relative !important;
+						top: 0;
+						left: 0;
+						display: block;
+						width: auto;
+						height: auto;
+					}
+
+					.custom-close-button { display: none; }
+				}
 			`;
 		},
 		calculateCoinsNeededForNthNoble: function (noble) {
@@ -517,7 +531,7 @@ if (typeof window.twSDK === 'undefined') {
 			const specialContent = this.renderSpecialContent(mainClass);
 
 			const content = `
-				<div class="${mainClass}" id="${id}">
+				<div class="${mainClass} ra-box-widget" id="${id}">
 					<div class="${mainClass}-header">
 						<h3>${this.tt(this.scriptData.name)}</h3>
 					</div>
@@ -568,7 +582,7 @@ if (typeof window.twSDK === 'undefined') {
 			const specialContent = this.renderSpecialContent(mainClass);
 
 			const content = `
-				<div class="${mainClass}" id="${id}">
+				<div class="${mainClass} ra-fixed-widget" id="${id}">
 					<div class="${mainClass}-header">
 						<h3>${this.tt(this.scriptData.name)}</h3>
 					</div>
@@ -606,13 +620,17 @@ if (typeof window.twSDK === 'undefined') {
 			`;
 
 			if (jQuery(`#${id}`).length < 1) {
-				jQuery('#contentContainer').prepend(content);
-				jQuery(`#${id}`).draggable();
+				if (mobiledevice) {
+					jQuery('#content_value').prepend(content);
+				} else {
+					jQuery('#contentContainer').prepend(content);
+					jQuery(`#${id}`).draggable();
 
-				jQuery(`#${id} .custom-close-button`).on('click', function (e) {
-					e.preventDefault();
-					jQuery(`#${id}`).remove();
-				});
+					jQuery(`#${id} .custom-close-button`).on('click', function (e) {
+						e.preventDefault();
+						jQuery(`#${id}`).remove();
+					});
+				}
 			} else {
 				jQuery(`.${mainClass}-body`).html(body);
 			}
