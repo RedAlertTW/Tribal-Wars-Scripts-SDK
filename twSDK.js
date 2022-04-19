@@ -1,7 +1,7 @@
 /*
 	NAME: Tribal Wars Scripts Library
-	VERSION: 0.4.2 (beta version)
-	LAST UPDATED AT: 2022-04-14
+	VERSION: 0.4.3 (beta version)
+	LAST UPDATED AT: 2022-04-18
 	AUTHOR: RedAlert (RedAlert#9859)
 	AUTHOR URL: https://twscripts.dev/
 	CONTRIBUTORS: Shinko to Kuma; Sass
@@ -170,6 +170,9 @@ if (typeof window.twSDK === 'undefined') {
 				.ra-table tr:nth-of-type(2n) td { background-color: #f0e2be }
 				.ra-table tr:nth-of-type(2n+1) td { background-color: #fff5da; }
 
+				.ra-table-v2 th,
+				.ra-table-v2 td { text-align: left; }
+
 				/* Inputs */
 				.ra-textarea { width: 100%; height: 80px; resize: none; }
 
@@ -301,6 +304,16 @@ if (typeof window.twSDK === 'undefined') {
 			}
 			return arrData;
 		},
+		filterVillagesByPlayerIds: function (playerIds, villages) {
+			const playerVillages = [];
+			villages.forEach((village) => {
+				if (playerIds.includes(parseInt(village[4]))) {
+					const coordinate = village[2] + '|' + village[3];
+					playerVillages.push(coordinate);
+				}
+			});
+			return playerVillages;
+		},
 		frequencyCounter: function (array) {
 			return array.reduce(function (acc, curr) {
 				if (typeof acc[curr] == 'undefined') {
@@ -379,9 +392,172 @@ if (typeof window.twSDK === 'undefined') {
 			const coordParts = coord.split('|');
 			return coordParts[1].charAt(0) + coordParts[0].charAt(0);
 		},
+		getContinentsFromCoordinates: function (coordinates) {
+			let continents = [];
+
+			coordinates.forEach((coord) => {
+				const continent = twSDK.getContinentByCoord(coord);
+				continents.push(continent);
+			});
+
+			return [...new Set(continents)];
+		},
 		getCoordFromString: function (string) {
 			if (!string) return [];
 			return string.match(this.coordsRegex)[0];
+		},
+		getDestinationCoordinates: function (config, tribes, players, villages) {
+			const {
+				playersInput,
+				tribesInput,
+				continents,
+				minCoord,
+				maxCoord,
+				distCenter,
+				center,
+				excludedPlayers,
+				enable20To1Limit,
+				minPoints,
+				maxPoints,
+			} = config;
+
+			// get target coordinates
+			const chosenPlayers = playersInput.split(',');
+			const chosenTribes = tribesInput.split(',');
+
+			const chosenPlayerIds = twSDK.getEntityIdsByArrayIndex(chosenPlayers, players, 1);
+			const chosenTribeIds = twSDK.getEntityIdsByArrayIndex(chosenTribes, tribes, 2);
+
+			const tribePlayers = twSDK.getTribeMembersById(chosenTribeIds, players);
+
+			const mergedPlayersList = [...tribePlayers, ...chosenPlayerIds];
+			let uniquePlayersList = [...new Set(mergedPlayersList)];
+
+			const chosenExcludedPlayers = excludedPlayers.split(',');
+			if (chosenExcludedPlayers.length > 0) {
+				const excludedPlayersIds = twSDK.getEntityIdsByArrayIndex(chosenExcludedPlayers, players, 1);
+				excludedPlayersIds.forEach((item) => {
+					uniquePlayersList = uniquePlayersList.filter((player) => player !== item);
+				});
+			}
+
+			if (enable20To1Limit) {
+				let uniquePlayersListArray = [];
+				uniquePlayersList.forEach((playerId) => {
+					players.forEach((player) => {
+						if (parseInt(player[0]) === playerId) {
+							uniquePlayersListArray.push(player);
+						}
+					});
+				});
+
+				const playersNotBiggerThen20Times = uniquePlayersListArray.filter((player) => {
+					return parseInt(player[4]) <= parseInt(game_data.player.points) * 20;
+				});
+
+				uniquePlayersList = playersNotBiggerThen20Times.map((player) => parseInt(player[0]));
+			}
+
+			let coordinatesArray = twSDK.filterVillagesByPlayerIds(uniquePlayersList, villages);
+
+			if (minPoints || maxPoints) {
+				let filteredCoordinatesArray = [];
+
+				coordinatesArray.forEach((coordinate) => {
+					villages.forEach((village) => {
+						const villageCoordinate = village[2] + '|' + village[3];
+						if (villageCoordinate === coordinate) {
+							filteredCoordinatesArray.push(village);
+						}
+					});
+				});
+
+				filteredCoordinatesArray = filteredCoordinatesArray.filter((village) => {
+					const villagePoints = parseInt(village[5]);
+					const minPointsNumber = parseInt(minPoints) || 26;
+					const maxPointsNumber = parseInt(maxPoints) || 12124;
+					if (villagePoints > minPointsNumber && villagePoints < maxPointsNumber) {
+						return village;
+					}
+				});
+
+				coordinatesArray = filteredCoordinatesArray.map((village) => village[2] + '|' + village[3]);
+			}
+
+			// filter coordinates by continent
+			if (continents.length) {
+				let chosenContinentsArray = continents.split(',');
+				chosenContinentsArray = chosenContinentsArray.map((item) => item.trim());
+
+				const availableContinents = twSDK.getContinentsFromCoordinates(coordinatesArray);
+				const filteredVillagesByContinent = twSDK.getFilteredVillagesByContinent(
+					coordinatesArray,
+					availableContinents
+				);
+
+				const isUserInputValid = chosenContinentsArray.every((item) => availableContinents.includes(item));
+
+				if (isUserInputValid) {
+					coordinatesArray = chosenContinentsArray
+						.map((continent) => {
+							if (continent.length && $.isNumeric(continent)) {
+								return [...filteredVillagesByContinent[continent]];
+							} else {
+								return;
+							}
+						})
+						.flat();
+				} else {
+					return [];
+				}
+			}
+
+			// filter coordinates by a bounding box of coordinates
+			if (minCoord.length && maxCoord.length) {
+				const raMinCoordCheck = minCoord.match(twSDK.coordsRegex);
+				const raMaxCoordCheck = maxCoord.match(twSDK.coordsRegex);
+
+				if (raMinCoordCheck !== null && raMaxCoordCheck !== null) {
+					const [minX, minY] = raMinCoordCheck[0].split('|');
+					const [maxX, maxY] = raMaxCoordCheck[0].split('|');
+
+					coordinatesArray = [...coordinatesArray].filter((coordinate) => {
+						const [x, y] = coordinate.split('|');
+						if (minX <= x && x <= maxX && minY <= y && y <= maxY) {
+							return coordinate;
+						}
+					});
+				} else {
+					return [];
+				}
+			}
+
+			// filter by radius
+			if (distCenter.length && center.length) {
+				if (!$.isNumeric(distCenter)) distCenter = 0;
+				const raCenterCheck = center.match(twSDK.coordsRegex);
+
+				if (distCenter !== 0 && raCenterCheck !== null) {
+					let coordinatesArrayWithDistance = [];
+					coordinatesArray.forEach((coordinate) => {
+						const distance = twSDK.calculateDistance(raCenterCheck[0], coordinate);
+						coordinatesArrayWithDistance.push({
+							coord: coordinate,
+							distance: distance,
+						});
+					});
+
+					coordinatesArrayWithDistance = coordinatesArrayWithDistance.filter((item) => {
+						return parseFloat(item.distance) <= parseFloat(distCenter);
+					});
+
+					coordinatesArray = coordinatesArrayWithDistance.map((item) => item.coord);
+				} else {
+					return [];
+				}
+			}
+
+			return coordinatesArray;
 		},
 		getGameFeatures: function () {
 			const { Premium, FarmAssistent, AccountManager } = game_data.features;
@@ -401,11 +577,29 @@ if (typeof window.twSDK === 'undefined') {
 			});
 			return itemIds;
 		},
+		getFilteredVillagesByContinent: function (playerVillagesCoords, continents) {
+			let coords = [...playerVillagesCoords];
+			let filteredVillagesByContinent = [];
+
+			coords.forEach((coord) => {
+				continents.forEach((continent) => {
+					let currentVillageContinent = twSDK.getContinentByCoord(coord);
+					if (currentVillageContinent === continent) {
+						filteredVillagesByContinent.push({
+							continent: continent,
+							coords: coord,
+						});
+					}
+				});
+			});
+
+			return twSDK.groupArrayByProperty(filteredVillagesByContinent, 'continent', 'coords');
+		},
 		getKeyByValue: function (object, value) {
 			return Object.keys(object).find((key) => object[key] === value);
 		},
 		getLandingTimeFromArrivesIn: function (arrivesIn) {
-			const currentServerTime = this.getServerDateTimeObject();
+			const currentServerTime = twSDK.getServerDateTimeObject();
 			const [hours, minutes, seconds] = arrivesIn.split(':');
 			const totalSeconds = +hours * 3600 + +minutes * 60 + +seconds;
 			const arrivalDateTime = new Date(currentServerTime.getTime() + totalSeconds * 1000);
@@ -424,6 +618,15 @@ if (typeof window.twSDK === 'undefined') {
 			const [day, month, year] = serverDate.split('/');
 			const serverTimeFormatted = year + '-' + month + '-' + day + ' ' + serverTime;
 			return new Date(serverTimeFormatted);
+		},
+		getTribeMembersById: function (tribeIds, players) {
+			const tribeMemberIds = [];
+			players.forEach((player) => {
+				if (tribeIds.includes(parseInt(player[2]))) {
+					tribeMemberIds.push(parseInt(player[0]));
+				}
+			});
+			return tribeMemberIds;
 		},
 		getVillageBuildings: function () {
 			const buildings = game_data.village.buildings;
