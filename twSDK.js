@@ -1,7 +1,7 @@
 /*
 	NAME: Tribal Wars Scripts Library
-	VERSION: 0.4.3 (beta version)
-	LAST UPDATED AT: 2022-04-18
+	VERSION: 0.4.4 (beta version)
+	LAST UPDATED AT: 2022-04-22
 	AUTHOR: RedAlert (RedAlert#9859)
 	AUTHOR URL: https://twscripts.dev/
 	CONTRIBUTORS: Shinko to Kuma; Sass
@@ -870,6 +870,18 @@ if (typeof window.twSDK === 'undefined') {
 							<p>April Fools' Day.</p>
 						</details>
 					</div>
+				`;
+			}
+
+			if (dayOfMonth === 22 && month === 3) {
+				// April 1st
+				specialContent = `
+					<div class="${mainClass}-special-content ra-mb15 ra-tac">
+						<img src="https://twscripts.dev/scripts/earth-day.webp" class="ra-earth-day-image" />
+					</div>
+					<style>
+						.ra-earth-day-image { max-width: 300px; width: 100%; margin: 0 auto; display: inline-block; }
+					</style>
 				`;
 			}
 
