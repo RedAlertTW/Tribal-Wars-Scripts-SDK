@@ -1,7 +1,7 @@
 /*
 	NAME: Tribal Wars Scripts Library
-	VERSION: 0.4.4 (beta version)
-	LAST UPDATED AT: 2022-04-22
+	VERSION: 0.4.5 (beta version)
+	LAST UPDATED AT: 2022-04-25
 	AUTHOR: RedAlert (RedAlert#9859)
 	AUTHOR URL: https://twscripts.dev/
 	CONTRIBUTORS: Shinko to Kuma; Sass
@@ -419,6 +419,9 @@ if (typeof window.twSDK === 'undefined') {
 				enable20To1Limit,
 				minPoints,
 				maxPoints,
+				startTime,
+				endTime,
+				whatSend,
 			} = config;
 
 			// get target coordinates
@@ -441,6 +444,7 @@ if (typeof window.twSDK === 'undefined') {
 				});
 			}
 
+			// filter by 20:1 rule
 			if (enable20To1Limit) {
 				let uniquePlayersListArray = [];
 				uniquePlayersList.forEach((playerId) => {
@@ -460,6 +464,7 @@ if (typeof window.twSDK === 'undefined') {
 
 			let coordinatesArray = twSDK.filterVillagesByPlayerIds(uniquePlayersList, villages);
 
+			// filter by min and max village points
 			if (minPoints || maxPoints) {
 				let filteredCoordinatesArray = [];
 
