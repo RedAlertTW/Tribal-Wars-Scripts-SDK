@@ -1,7 +1,7 @@
 /*
 	NAME: Tribal Wars Scripts Library
-	VERSION: 0.4.5 (beta version)
-	LAST UPDATED AT: 2022-04-25
+	VERSION: 0.4.6 (beta version)
+	LAST UPDATED AT: 2022-05-08
 	AUTHOR: RedAlert (RedAlert#9859)
 	AUTHOR URL: https://twscripts.dev/
 	CONTRIBUTORS: Shinko to Kuma; Sass
@@ -36,7 +36,7 @@ if (typeof window.twSDK === 'undefined') {
 		worldDataVillages: 'map/village.txt',
 		worldDataPlayers: 'map/player.txt',
 		worldDataTribes: 'map/ally.txt',
-		// constants
+		// game constants
 		buildingPoints: {
 			main: [
 				10, 2, 2, 3, 4, 4, 5, 6, 7, 9, 10, 12, 15, 18, 21, 26, 31, 37, 44, 53, 64, 77, 92, 110, 133, 159, 191,
@@ -850,8 +850,8 @@ if (typeof window.twSDK === 'undefined') {
 			const dayOfMonth = today.getDate();
 			const month = today.getMonth();
 
+			// April 1 (April Fool's Day)
 			if (dayOfMonth === 1 && month === 3) {
-				// April 1st
 				specialContent = `
 					<div class="${mainClass}-special-content ra-mb15">
 						<details class="ra-details">
@@ -878,14 +878,26 @@ if (typeof window.twSDK === 'undefined') {
 				`;
 			}
 
+			// April 22 (Earth's Day)
 			if (dayOfMonth === 22 && month === 3) {
-				// April 1st
 				specialContent = `
 					<div class="${mainClass}-special-content ra-mb15 ra-tac">
 						<img src="https://twscripts.dev/scripts/earth-day.webp" class="ra-earth-day-image" />
 					</div>
 					<style>
 						.ra-earth-day-image { max-width: 300px; width: 100%; margin: 0 auto; display: inline-block; }
+					</style>
+				`;
+			}
+
+			// May 8 (International Mother's Day)
+			if (dayOfMonth === 08 && month === 4) {
+				specialContent = `
+					<div class="${mainClass}-special-content ra-mb15 ra-tac">
+						<img src="https://twscripts.dev/scripts/happy-mothers-day.jpg" class="ra-happy-mothers-day" />
+					</div>
+					<style>
+						.ra-happy-mothers-day { max-width: 300px; width: 100%; margin: 0 auto; display: inline-block; }
 					</style>
 				`;
 			}
