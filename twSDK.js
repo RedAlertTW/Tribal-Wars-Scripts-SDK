@@ -1,7 +1,7 @@
 /*
 	NAME: Tribal Wars Scripts Library
-	VERSION: 0.4.6 (beta version)
-	LAST UPDATED AT: 2022-05-08
+	VERSION: 0.5.0 (beta version)
+	LAST UPDATED AT: 2022-05-11
 	AUTHOR: RedAlert (RedAlert#9859)
 	AUTHOR URL: https://twscripts.dev/
 	CONTRIBUTORS: Shinko to Kuma; Sass
@@ -419,9 +419,7 @@ if (typeof window.twSDK === 'undefined') {
 				enable20To1Limit,
 				minPoints,
 				maxPoints,
-				startTime,
-				endTime,
-				whatSend,
+				selectiveRandomConfig,
 			} = config;
 
 			// get target coordinates
@@ -560,6 +558,29 @@ if (typeof window.twSDK === 'undefined') {
 				} else {
 					return [];
 				}
+			}
+
+			// apply multiplier
+			if (selectiveRandomConfig) {
+				const selectiveRandomizer = selectiveRandomConfig.split(';');
+
+				const makeRepeated = (arr, repeats) => Array.from({ length: repeats }, () => arr).flat();
+				const multipliedCoordinatesArray = [];
+
+				selectiveRandomizer.forEach((item) => {
+					const [playerName, distribution] = item.split(':');
+					if (distribution > 1) {
+						players.forEach((player) => {
+							if (twSDK.cleanString(player[1]) === twSDK.cleanString(playerName)) {
+								let playerVillages = twSDK.filterVillagesByPlayerIds([parseInt(player[0])], villages);
+								const flattenedPlayerVillagesArray = makeRepeated(playerVillages, distribution);
+								multipliedCoordinatesArray.push(flattenedPlayerVillagesArray);
+							}
+						});
+					}
+				});
+
+				coordinatesArray.push(...multipliedCoordinatesArray.flat());
 			}
 
 			return coordinatesArray;
