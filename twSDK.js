@@ -1,7 +1,7 @@
 /*
 	NAME: Tribal Wars Scripts Library
-	VERSION: 0.5.2 (beta version)
-	LAST UPDATED AT: 2022-06-24
+	VERSION: 0.5.3 (beta version)
+	LAST UPDATED AT: 2022-10-21
 	AUTHOR: RedAlert (RedAlert#9859)
 	AUTHOR URL: https://twscripts.dev/
 	CONTRIBUTORS: Shinko to Kuma; Sass
@@ -14,7 +14,7 @@
 	This notice may not be removed or altered from any source distribution.
  */
 
-if (typeof window.twSDK === 'undefined') {
+if (typeof window.twSDK === "undefined") {
 	window.twSDK = {
 		// variables
 		scriptData: {},
@@ -30,53 +30,68 @@ if (typeof window.twSDK === 'undefined') {
 		units: game_data.units,
 		buildings: game_data.village.buildings,
 		coordsRegex: /[0-9]{3}\|[0-9]{3}/g,
-		worldInfoInterface: '/interface.php?func=get_config',
-		unitInfoInterface: '/interface.php?func=get_unit_info',
-		buildingInfoInterface: '/interface.php?func=get_building_info',
-		worldDataVillages: 'map/village.txt',
-		worldDataPlayers: 'map/player.txt',
-		worldDataTribes: 'map/ally.txt',
+		worldInfoInterface: "/interface.php?func=get_config",
+		unitInfoInterface: "/interface.php?func=get_unit_info",
+		buildingInfoInterface: "/interface.php?func=get_building_info",
+		worldDataVillages: "map/village.txt",
+		worldDataPlayers: "map/player.txt",
+		worldDataTribes: "map/ally.txt",
 		// game constants
 		buildingPoints: {
 			main: [
-				10, 2, 2, 3, 4, 4, 5, 6, 7, 9, 10, 12, 15, 18, 21, 26, 31, 37, 44, 53, 64, 77, 92, 110, 133, 159, 191,
-				229, 274, 330,
+				10, 2, 2, 3, 4, 4, 5, 6, 7, 9, 10, 12, 15, 18, 21, 26, 31, 37, 44, 53,
+				64, 77, 92, 110, 133, 159, 191, 229, 274, 330,
 			],
 			barracks: [
-				16, 3, 4, 5, 5, 7, 8, 9, 12, 14, 16, 20, 24, 28, 34, 42, 49, 59, 71, 85, 102, 123, 147, 177, 212,
+				16, 3, 4, 5, 5, 7, 8, 9, 12, 14, 16, 20, 24, 28, 34, 42, 49, 59, 71, 85,
+				102, 123, 147, 177, 212,
 			],
-			stable: [20, 4, 5, 6, 6, 9, 10, 12, 14, 17, 21, 25, 29, 36, 43, 51, 62, 74, 88, 107],
+			stable: [
+				20, 4, 5, 6, 6, 9, 10, 12, 14, 17, 21, 25, 29, 36, 43, 51, 62, 74, 88,
+				107,
+			],
 			garage: [24, 5, 6, 6, 9, 10, 12, 14, 17, 21, 25, 29, 36, 43, 51],
 			chuch: [10, 2, 2],
 			church_f: [10],
-			watchtower: [42, 8, 10, 13, 14, 18, 20, 25, 31, 36, 43, 52, 62, 75, 90, 108, 130, 155, 186, 224],
+			watchtower: [
+				42, 8, 10, 13, 14, 18, 20, 25, 31, 36, 43, 52, 62, 75, 90, 108, 130,
+				155, 186, 224,
+			],
 			snob: [512],
-			smith: [19, 4, 4, 6, 6, 8, 10, 11, 14, 16, 20, 23, 28, 34, 41, 49, 58, 71, 84, 101],
+			smith: [
+				19, 4, 4, 6, 6, 8, 10, 11, 14, 16, 20, 23, 28, 34, 41, 49, 58, 71, 84,
+				101,
+			],
 			place: [0],
 			statue: [24],
-			market: [10, 2, 2, 3, 4, 4, 5, 6, 7, 9, 10, 12, 15, 18, 21, 26, 31, 37, 44, 53, 64, 77, 92, 110, 133],
+			market: [
+				10, 2, 2, 3, 4, 4, 5, 6, 7, 9, 10, 12, 15, 18, 21, 26, 31, 37, 44, 53,
+				64, 77, 92, 110, 133,
+			],
 			wood: [
-				6, 1, 2, 1, 2, 3, 3, 3, 5, 5, 6, 8, 8, 11, 13, 15, 19, 22, 27, 32, 38, 46, 55, 66, 80, 95, 115, 137,
-				165, 198,
+				6, 1, 2, 1, 2, 3, 3, 3, 5, 5, 6, 8, 8, 11, 13, 15, 19, 22, 27, 32, 38,
+				46, 55, 66, 80, 95, 115, 137, 165, 198,
 			],
 			stone: [
-				6, 1, 2, 1, 2, 3, 3, 3, 5, 5, 6, 8, 8, 11, 13, 15, 19, 22, 27, 32, 38, 46, 55, 66, 80, 95, 115, 137,
-				165, 198,
+				6, 1, 2, 1, 2, 3, 3, 3, 5, 5, 6, 8, 8, 11, 13, 15, 19, 22, 27, 32, 38,
+				46, 55, 66, 80, 95, 115, 137, 165, 198,
 			],
 			iron: [
-				6, 1, 2, 1, 2, 3, 3, 3, 5, 5, 6, 8, 8, 11, 13, 15, 19, 22, 27, 32, 38, 46, 55, 66, 80, 95, 115, 137,
-				165, 198,
+				6, 1, 2, 1, 2, 3, 3, 3, 5, 5, 6, 8, 8, 11, 13, 15, 19, 22, 27, 32, 38,
+				46, 55, 66, 80, 95, 115, 137, 165, 198,
 			],
 			farm: [
-				5, 1, 1, 2, 1, 2, 3, 3, 3, 5, 5, 6, 8, 8, 11, 13, 15, 19, 22, 27, 32, 38, 46, 55, 66, 80, 95, 115, 137,
-				165,
+				5, 1, 1, 2, 1, 2, 3, 3, 3, 5, 5, 6, 8, 8, 11, 13, 15, 19, 22, 27, 32,
+				38, 46, 55, 66, 80, 95, 115, 137, 165,
 			],
 			storage: [
-				6, 1, 2, 1, 2, 3, 3, 3, 5, 5, 6, 8, 8, 11, 13, 15, 19, 22, 27, 32, 38, 46, 55, 66, 80, 95, 115, 137,
-				165, 198,
+				6, 1, 2, 1, 2, 3, 3, 3, 5, 5, 6, 8, 8, 11, 13, 15, 19, 22, 27, 32, 38,
+				46, 55, 66, 80, 95, 115, 137, 165, 198,
 			],
 			hide: [5, 1, 1, 2, 1, 2, 3, 3, 3, 5],
-			wall: [8, 2, 2, 2, 3, 3, 4, 5, 5, 7, 9, 9, 12, 15, 17, 20, 25, 29, 36, 43],
+			wall: [
+				8, 2, 2, 2, 3, 3, 4, 5, 5, 7, 9, 9, 12, 15, 17, 20, 25, 29, 36, 43,
+			],
 		},
 		unitsFarmSpace: {
 			spear: 1,
@@ -138,20 +153,34 @@ if (typeof window.twSDK === 'undefined') {
 				console.debug(`${scriptInfo} Game Version:`, game_data.majorVersion);
 				console.debug(`${scriptInfo} Game Build:`, game_data.version);
 				console.debug(`${scriptInfo} Locale:`, game_data.locale);
-				console.debug(`${scriptInfo} Premium Account:`, game_data.features.Premium.active);
-				console.debug(`${scriptInfo} Loot Assistant:`, game_data.features.FarmAssistent.active);
-				console.debug(`${scriptInfo} Account Manager:`, game_data.features.AccountManager.active);
+				console.debug(
+					`${scriptInfo} Premium Account:`,
+					game_data.features.Premium.active
+				);
+				console.debug(
+					`${scriptInfo} Loot Assistant:`,
+					game_data.features.FarmAssistent.active
+				);
+				console.debug(
+					`${scriptInfo} Account Manager:`,
+					game_data.features.AccountManager.active
+				);
 			}
 		},
 		_registerScript: function () {
 			if (this.enableCountApi) {
 				const { prefix, author } = this.scriptData;
 				const scriptInfo = this.scriptInfo();
-				jQuery.getJSON(`https://api.countapi.xyz/hit/${author}/${prefix}`, ({ value }) => {
-					console.debug(
-						`${scriptInfo} This script has been run ${this.formatAsNumber(parseInt(value))} times.`
-					);
-				});
+				jQuery.getJSON(
+					`https://api.countapi.xyz/hit/${author}/${prefix}`,
+					({ value }) => {
+						console.debug(
+							`${scriptInfo} This script has been run ${this.formatAsNumber(
+								parseInt(value)
+							)} times.`
+						);
+					}
+				);
 			}
 		},
 
@@ -172,6 +201,10 @@ if (typeof window.twSDK === 'undefined') {
 
 				.ra-table-v2 th,
 				.ra-table-v2 td { text-align: left; }
+
+				.ra-table-v3 { border: 2px solid #93763d; }
+				.ra-table-v3 th,
+				.ra-table-v3 td { border-collapse: separate; border: 1px solid #93763d; text-align: left; }
 
 				/* Inputs */
 				.ra-textarea { width: 100%; height: 80px; resize: none; }
@@ -221,14 +254,14 @@ if (typeof window.twSDK === 'undefined') {
 		calculateDistanceFromCurrentVillage: function (coord) {
 			const x1 = game_data.village.x;
 			const y1 = game_data.village.y;
-			const [x2, y2] = coord.split('|');
+			const [x2, y2] = coord.split("|");
 			const deltaX = Math.abs(x1 - x2);
 			const deltaY = Math.abs(y1 - y2);
 			return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 		},
 		calculateDistance: function (from, to) {
-			const [x1, y1] = from.split('|');
-			const [x2, y2] = to.split('|');
+			const [x1, y1] = from.split("|");
+			const [x2, y2] = to.split("|");
 			const deltaX = Math.abs(x1 - x2);
 			const deltaY = Math.abs(y1 - y2);
 			return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
@@ -249,7 +282,9 @@ if (typeof window.twSDK === 'undefined') {
 			const { speed, unit_speed } = worldConfig.config;
 
 			times.forEach((time) => {
-				let travelTime = Math.round((distance * time * 60) / speed / unit_speed);
+				let travelTime = Math.round(
+					(distance * time * 60) / speed / unit_speed
+				);
 				travelTime = _self.secondsToHms(travelTime);
 				travelTimes.push(travelTime);
 			});
@@ -258,10 +293,12 @@ if (typeof window.twSDK === 'undefined') {
 		},
 		checkValidLocation: function (type) {
 			switch (type) {
-				case 'screen':
-					return this.allowedScreens.includes(this.getParameterByName('screen'));
-				case 'mode':
-					return this.allowedModes.includes(this.getParameterByName('mode'));
+				case "screen":
+					return this.allowedScreens.includes(
+						this.getParameterByName("screen")
+					);
+				case "mode":
+					return this.allowedModes.includes(this.getParameterByName("mode"));
 				default:
 					return false;
 			}
@@ -270,33 +307,36 @@ if (typeof window.twSDK === 'undefined') {
 			return this.allowedMarkets.includes(this.market);
 		},
 		cleanString: function (string) {
-			return decodeURIComponent(string).replace(/\+/g, ' ');
+			return decodeURIComponent(string).replace(/\+/g, " ");
 		},
 		copyToClipboard: function (string) {
 			navigator.clipboard.writeText(string);
 		},
-		csvToArray: function (strData, strDelimiter = ',') {
+		csvToArray: function (strData, strDelimiter = ",") {
 			var objPattern = new RegExp(
-				'(\\' +
+				"(\\" +
 					strDelimiter +
-					'|\\r?\\n|\\r|^)' +
+					"|\\r?\\n|\\r|^)" +
 					'(?:"([^"]*(?:""[^"]*)*)"|' +
 					'([^"\\' +
 					strDelimiter +
-					'\\r\\n]*))',
-				'gi'
+					"\\r\\n]*))",
+				"gi"
 			);
 			var arrData = [[]];
 			var arrMatches = null;
 			while ((arrMatches = objPattern.exec(strData))) {
 				var strMatchedDelimiter = arrMatches[1];
-				if (strMatchedDelimiter.length && strMatchedDelimiter !== strDelimiter) {
+				if (
+					strMatchedDelimiter.length &&
+					strMatchedDelimiter !== strDelimiter
+				) {
 					arrData.push([]);
 				}
 				var strMatchedValue;
 
 				if (arrMatches[2]) {
-					strMatchedValue = arrMatches[2].replace(new RegExp('""', 'g'), '"');
+					strMatchedValue = arrMatches[2].replace(new RegExp('""', "g"), '"');
 				} else {
 					strMatchedValue = arrMatches[3];
 				}
@@ -308,7 +348,7 @@ if (typeof window.twSDK === 'undefined') {
 			const playerVillages = [];
 			villages.forEach((village) => {
 				if (playerIds.includes(parseInt(village[4]))) {
-					const coordinate = village[2] + '|' + village[3];
+					const coordinate = village[2] + "|" + village[3];
 					playerVillages.push(coordinate);
 				}
 			});
@@ -316,7 +356,7 @@ if (typeof window.twSDK === 'undefined') {
 		},
 		frequencyCounter: function (array) {
 			return array.reduce(function (acc, curr) {
-				if (typeof acc[curr] == 'undefined') {
+				if (typeof acc[curr] == "undefined") {
 					acc[curr] = 1;
 				} else {
 					acc[curr] += 1;
@@ -366,30 +406,39 @@ if (typeof window.twSDK === 'undefined') {
 		},
 		getBuildingsInfo: async function () {
 			const TIME_INTERVAL = 60 * 60 * 1000 * 24 * 365; // fetch config only once since they don't change
-			const LAST_UPDATED_TIME = localStorage.getItem('buildings_info_last_updated') ?? 0;
+			const LAST_UPDATED_TIME =
+				localStorage.getItem("buildings_info_last_updated") ?? 0;
 			let buildingsInfo = [];
 
 			if (LAST_UPDATED_TIME !== null) {
 				if (Date.parse(new Date()) >= LAST_UPDATED_TIME + TIME_INTERVAL) {
-					const response = await jQuery.ajax({ url: this.buildingInfoInterface });
+					const response = await jQuery.ajax({
+						url: this.buildingInfoInterface,
+					});
 					buildingsInfo = this.xml2json(jQuery(response));
-					localStorage.setItem('buildings_info', JSON.stringify(buildingsInfo));
-					localStorage.setItem('buildings_info_last_updated', Date.parse(new Date()));
+					localStorage.setItem("buildings_info", JSON.stringify(buildingsInfo));
+					localStorage.setItem(
+						"buildings_info_last_updated",
+						Date.parse(new Date())
+					);
 				} else {
-					buildingsInfo = JSON.parse(localStorage.getItem('buildings_info'));
+					buildingsInfo = JSON.parse(localStorage.getItem("buildings_info"));
 				}
 			} else {
 				const response = await jQuery.ajax({ url: this.buildingInfoInterface });
 				buildingsInfo = this.xml2json(jQuery(response));
-				localStorage.setItem('buildings_info', JSON.stringify(unitInfo));
-				localStorage.setItem('buildings_info_last_updated', Date.parse(new Date()));
+				localStorage.setItem("buildings_info", JSON.stringify(unitInfo));
+				localStorage.setItem(
+					"buildings_info_last_updated",
+					Date.parse(new Date())
+				);
 			}
 
 			return buildingsInfo;
 		},
 		getContinentByCoord: function (coord) {
-			if (!coord) return '';
-			const coordParts = coord.split('|');
+			if (!coord) return "";
+			const coordParts = coord.split("|");
 			return coordParts[1].charAt(0) + coordParts[0].charAt(0);
 		},
 		getContinentsFromCoordinates: function (coordinates) {
@@ -423,22 +472,36 @@ if (typeof window.twSDK === 'undefined') {
 			} = config;
 
 			// get target coordinates
-			const chosenPlayers = playersInput.split(',');
-			const chosenTribes = tribesInput.split(',');
+			const chosenPlayers = playersInput.split(",");
+			const chosenTribes = tribesInput.split(",");
 
-			const chosenPlayerIds = twSDK.getEntityIdsByArrayIndex(chosenPlayers, players, 1);
-			const chosenTribeIds = twSDK.getEntityIdsByArrayIndex(chosenTribes, tribes, 2);
+			const chosenPlayerIds = twSDK.getEntityIdsByArrayIndex(
+				chosenPlayers,
+				players,
+				1
+			);
+			const chosenTribeIds = twSDK.getEntityIdsByArrayIndex(
+				chosenTribes,
+				tribes,
+				2
+			);
 
 			const tribePlayers = twSDK.getTribeMembersById(chosenTribeIds, players);
 
 			const mergedPlayersList = [...tribePlayers, ...chosenPlayerIds];
 			let uniquePlayersList = [...new Set(mergedPlayersList)];
 
-			const chosenExcludedPlayers = excludedPlayers.split(',');
+			const chosenExcludedPlayers = excludedPlayers.split(",");
 			if (chosenExcludedPlayers.length > 0) {
-				const excludedPlayersIds = twSDK.getEntityIdsByArrayIndex(chosenExcludedPlayers, players, 1);
+				const excludedPlayersIds = twSDK.getEntityIdsByArrayIndex(
+					chosenExcludedPlayers,
+					players,
+					1
+				);
 				excludedPlayersIds.forEach((item) => {
-					uniquePlayersList = uniquePlayersList.filter((player) => player !== item);
+					uniquePlayersList = uniquePlayersList.filter(
+						(player) => player !== item
+					);
 				});
 			}
 
@@ -453,14 +516,23 @@ if (typeof window.twSDK === 'undefined') {
 					});
 				});
 
-				const playersNotBiggerThen20Times = uniquePlayersListArray.filter((player) => {
-					return parseInt(player[4]) <= parseInt(game_data.player.points) * 20;
-				});
+				const playersNotBiggerThen20Times = uniquePlayersListArray.filter(
+					(player) => {
+						return (
+							parseInt(player[4]) <= parseInt(game_data.player.points) * 20
+						);
+					}
+				);
 
-				uniquePlayersList = playersNotBiggerThen20Times.map((player) => parseInt(player[0]));
+				uniquePlayersList = playersNotBiggerThen20Times.map((player) =>
+					parseInt(player[0])
+				);
 			}
 
-			let coordinatesArray = twSDK.filterVillagesByPlayerIds(uniquePlayersList, villages);
+			let coordinatesArray = twSDK.filterVillagesByPlayerIds(
+				uniquePlayersList,
+				villages
+			);
 
 			// filter by min and max village points
 			if (minPoints || maxPoints) {
@@ -468,37 +540,50 @@ if (typeof window.twSDK === 'undefined') {
 
 				coordinatesArray.forEach((coordinate) => {
 					villages.forEach((village) => {
-						const villageCoordinate = village[2] + '|' + village[3];
+						const villageCoordinate = village[2] + "|" + village[3];
 						if (villageCoordinate === coordinate) {
 							filteredCoordinatesArray.push(village);
 						}
 					});
 				});
 
-				filteredCoordinatesArray = filteredCoordinatesArray.filter((village) => {
-					const villagePoints = parseInt(village[5]);
-					const minPointsNumber = parseInt(minPoints) || 26;
-					const maxPointsNumber = parseInt(maxPoints) || 12124;
-					if (villagePoints > minPointsNumber && villagePoints < maxPointsNumber) {
-						return village;
+				filteredCoordinatesArray = filteredCoordinatesArray.filter(
+					(village) => {
+						const villagePoints = parseInt(village[5]);
+						const minPointsNumber = parseInt(minPoints) || 26;
+						const maxPointsNumber = parseInt(maxPoints) || 12124;
+						if (
+							villagePoints > minPointsNumber &&
+							villagePoints < maxPointsNumber
+						) {
+							return village;
+						}
 					}
-				});
+				);
 
-				coordinatesArray = filteredCoordinatesArray.map((village) => village[2] + '|' + village[3]);
+				coordinatesArray = filteredCoordinatesArray.map(
+					(village) => village[2] + "|" + village[3]
+				);
 			}
 
 			// filter coordinates by continent
 			if (continents.length) {
-				let chosenContinentsArray = continents.split(',');
-				chosenContinentsArray = chosenContinentsArray.map((item) => item.trim());
-
-				const availableContinents = twSDK.getContinentsFromCoordinates(coordinatesArray);
-				const filteredVillagesByContinent = twSDK.getFilteredVillagesByContinent(
-					coordinatesArray,
-					availableContinents
+				let chosenContinentsArray = continents.split(",");
+				chosenContinentsArray = chosenContinentsArray.map((item) =>
+					item.trim()
 				);
 
-				const isUserInputValid = chosenContinentsArray.every((item) => availableContinents.includes(item));
+				const availableContinents =
+					twSDK.getContinentsFromCoordinates(coordinatesArray);
+				const filteredVillagesByContinent =
+					twSDK.getFilteredVillagesByContinent(
+						coordinatesArray,
+						availableContinents
+					);
+
+				const isUserInputValid = chosenContinentsArray.every((item) =>
+					availableContinents.includes(item)
+				);
 
 				if (isUserInputValid) {
 					coordinatesArray = chosenContinentsArray
@@ -521,11 +606,11 @@ if (typeof window.twSDK === 'undefined') {
 				const raMaxCoordCheck = maxCoord.match(twSDK.coordsRegex);
 
 				if (raMinCoordCheck !== null && raMaxCoordCheck !== null) {
-					const [minX, minY] = raMinCoordCheck[0].split('|');
-					const [maxX, maxY] = raMaxCoordCheck[0].split('|');
+					const [minX, minY] = raMinCoordCheck[0].split("|");
+					const [maxX, maxY] = raMaxCoordCheck[0].split("|");
 
 					coordinatesArray = [...coordinatesArray].filter((coordinate) => {
-						const [x, y] = coordinate.split('|');
+						const [x, y] = coordinate.split("|");
 						if (minX <= x && x <= maxX && minY <= y && y <= maxY) {
 							return coordinate;
 						}
@@ -543,18 +628,25 @@ if (typeof window.twSDK === 'undefined') {
 				if (distCenter !== 0 && raCenterCheck !== null) {
 					let coordinatesArrayWithDistance = [];
 					coordinatesArray.forEach((coordinate) => {
-						const distance = twSDK.calculateDistance(raCenterCheck[0], coordinate);
+						const distance = twSDK.calculateDistance(
+							raCenterCheck[0],
+							coordinate
+						);
 						coordinatesArrayWithDistance.push({
 							coord: coordinate,
 							distance: distance,
 						});
 					});
 
-					coordinatesArrayWithDistance = coordinatesArrayWithDistance.filter((item) => {
-						return parseFloat(item.distance) <= parseFloat(distCenter);
-					});
+					coordinatesArrayWithDistance = coordinatesArrayWithDistance.filter(
+						(item) => {
+							return parseFloat(item.distance) <= parseFloat(distCenter);
+						}
+					);
 
-					coordinatesArray = coordinatesArrayWithDistance.map((item) => item.coord);
+					coordinatesArray = coordinatesArrayWithDistance.map(
+						(item) => item.coord
+					);
 				} else {
 					return [];
 				}
@@ -562,18 +654,27 @@ if (typeof window.twSDK === 'undefined') {
 
 			// apply multiplier
 			if (selectiveRandomConfig) {
-				const selectiveRandomizer = selectiveRandomConfig.split(';');
+				const selectiveRandomizer = selectiveRandomConfig.split(";");
 
-				const makeRepeated = (arr, repeats) => Array.from({ length: repeats }, () => arr).flat();
+				const makeRepeated = (arr, repeats) =>
+					Array.from({ length: repeats }, () => arr).flat();
 				const multipliedCoordinatesArray = [];
 
 				selectiveRandomizer.forEach((item) => {
-					const [playerName, distribution] = item.split(':');
+					const [playerName, distribution] = item.split(":");
 					if (distribution > 1) {
 						players.forEach((player) => {
-							if (twSDK.cleanString(player[1]) === twSDK.cleanString(playerName)) {
-								let playerVillages = twSDK.filterVillagesByPlayerIds([parseInt(player[0])], villages);
-								const flattenedPlayerVillagesArray = makeRepeated(playerVillages, distribution);
+							if (
+								twSDK.cleanString(player[1]) === twSDK.cleanString(playerName)
+							) {
+								let playerVillages = twSDK.filterVillagesByPlayerIds(
+									[parseInt(player[0])],
+									villages
+								);
+								const flattenedPlayerVillagesArray = makeRepeated(
+									playerVillages,
+									distribution
+								);
 								multipliedCoordinatesArray.push(flattenedPlayerVillagesArray);
 							}
 						});
@@ -596,14 +697,19 @@ if (typeof window.twSDK === 'undefined') {
 			const itemIds = [];
 			chosenItems.forEach((chosenItem) => {
 				items.forEach((item) => {
-					if (twSDK.cleanString(item[index]) === twSDK.cleanString(chosenItem)) {
+					if (
+						twSDK.cleanString(item[index]) === twSDK.cleanString(chosenItem)
+					) {
 						return itemIds.push(parseInt(item[0]));
 					}
 				});
 			});
 			return itemIds;
 		},
-		getFilteredVillagesByContinent: function (playerVillagesCoords, continents) {
+		getFilteredVillagesByContinent: function (
+			playerVillagesCoords,
+			continents
+		) {
 			let coords = [...playerVillagesCoords];
 			let filteredVillagesByContinent = [];
 
@@ -619,30 +725,37 @@ if (typeof window.twSDK === 'undefined') {
 				});
 			});
 
-			return twSDK.groupArrayByProperty(filteredVillagesByContinent, 'continent', 'coords');
+			return twSDK.groupArrayByProperty(
+				filteredVillagesByContinent,
+				"continent",
+				"coords"
+			);
 		},
 		getKeyByValue: function (object, value) {
 			return Object.keys(object).find((key) => object[key] === value);
 		},
 		getLandingTimeFromArrivesIn: function (arrivesIn) {
 			const currentServerTime = twSDK.getServerDateTimeObject();
-			const [hours, minutes, seconds] = arrivesIn.split(':');
+			const [hours, minutes, seconds] = arrivesIn.split(":");
 			const totalSeconds = +hours * 3600 + +minutes * 60 + +seconds;
-			const arrivalDateTime = new Date(currentServerTime.getTime() + totalSeconds * 1000);
+			const arrivalDateTime = new Date(
+				currentServerTime.getTime() + totalSeconds * 1000
+			);
 			return arrivalDateTime;
 		},
 		getParameterByName: function (name, url = window.location.href) {
 			return new URL(url).searchParams.get(name);
 		},
 		getRelativeImagePath: function (url) {
-			const urlParts = url.split('/');
+			const urlParts = url.split("/");
 			return `/${urlParts[5]}/${urlParts[6]}/${urlParts[7]}`;
 		},
 		getServerDateTimeObject: function () {
-			const serverTime = jQuery('#serverTime').text();
-			const serverDate = jQuery('#serverDate').text();
-			const [day, month, year] = serverDate.split('/');
-			const serverTimeFormatted = year + '-' + month + '-' + day + ' ' + serverTime;
+			const serverTime = jQuery("#serverTime").text();
+			const serverDate = jQuery("#serverDate").text();
+			const [day, month, year] = serverDate.split("/");
+			const serverTimeFormatted =
+				year + "-" + month + "-" + day + " " + serverTime;
 			return new Date(serverTimeFormatted);
 		},
 		getTribeMembersById: function (tribeIds, players) {
@@ -671,46 +784,57 @@ if (typeof window.twSDK === 'undefined') {
 		},
 		getWorldConfig: async function () {
 			const TIME_INTERVAL = 60 * 60 * 1000 * 24 * 365; // fetch config only once since they don't change
-			const LAST_UPDATED_TIME = localStorage.getItem('world_config_last_updated') ?? 0;
+			const LAST_UPDATED_TIME =
+				localStorage.getItem("world_config_last_updated") ?? 0;
 			let worldConfig = [];
 
 			if (LAST_UPDATED_TIME !== null) {
 				if (Date.parse(new Date()) >= LAST_UPDATED_TIME + TIME_INTERVAL) {
 					const response = await jQuery.ajax({ url: this.worldInfoInterface });
 					worldConfig = this.xml2json(jQuery(response));
-					localStorage.setItem('world_config', JSON.stringify(worldConfig));
-					localStorage.setItem('world_config_last_updated', Date.parse(new Date()));
+					localStorage.setItem("world_config", JSON.stringify(worldConfig));
+					localStorage.setItem(
+						"world_config_last_updated",
+						Date.parse(new Date())
+					);
 				} else {
-					worldConfig = JSON.parse(localStorage.getItem('world_config'));
+					worldConfig = JSON.parse(localStorage.getItem("world_config"));
 				}
 			} else {
 				const response = await jQuery.ajax({ url: this.worldInfoInterface });
 				worldConfig = this.xml2json(jQuery(response));
-				localStorage.setItem('world_config', JSON.stringify(unitInfo));
-				localStorage.setItem('world_config_last_updated', Date.parse(new Date()));
+				localStorage.setItem("world_config", JSON.stringify(unitInfo));
+				localStorage.setItem(
+					"world_config_last_updated",
+					Date.parse(new Date())
+				);
 			}
 
 			return worldConfig;
 		},
 		getWorldUnitInfo: async function () {
 			const TIME_INTERVAL = 60 * 60 * 1000 * 24 * 365; // fetch config only once since they don't change
-			const LAST_UPDATED_TIME = localStorage.getItem('units_info_last_updated') ?? 0;
+			const LAST_UPDATED_TIME =
+				localStorage.getItem("units_info_last_updated") ?? 0;
 			let unitInfo = [];
 
 			if (LAST_UPDATED_TIME !== null) {
 				if (Date.parse(new Date()) >= LAST_UPDATED_TIME + TIME_INTERVAL) {
 					const response = await jQuery.ajax({ url: this.unitInfoInterface });
 					unitInfo = this.xml2json(jQuery(response));
-					localStorage.setItem('units_info', JSON.stringify(unitInfo));
-					localStorage.setItem('units_info_last_updated', Date.parse(new Date()));
+					localStorage.setItem("units_info", JSON.stringify(unitInfo));
+					localStorage.setItem(
+						"units_info_last_updated",
+						Date.parse(new Date())
+					);
 				} else {
-					unitInfo = JSON.parse(localStorage.getItem('units_info'));
+					unitInfo = JSON.parse(localStorage.getItem("units_info"));
 				}
 			} else {
 				const response = await jQuery.ajax({ url: this.unitInfoInterface });
 				unitInfo = this.xml2json(jQuery(response));
-				localStorage.setItem('units_info', JSON.stringify(unitInfo));
-				localStorage.setItem('units_info_last_updated', Date.parse(new Date()));
+				localStorage.setItem("units_info", JSON.stringify(unitInfo));
+				localStorage.setItem("units_info_last_updated", Date.parse(new Date()));
 			}
 
 			return unitInfo;
@@ -731,22 +855,22 @@ if (typeof window.twSDK === 'undefined') {
 			}, {});
 		},
 		formatAsNumber: function (number) {
-			return parseInt(number).toLocaleString('de');
+			return parseInt(number).toLocaleString("de");
 		},
 		isArcherWorld: function () {
-			return this.units.includes('archer');
+			return this.units.includes("archer");
 		},
 		isChurchWorld: function () {
-			return 'church' in this.buildings;
+			return "church" in this.buildings;
 		},
 		isPaladinWorld: function () {
-			return this.units.includes('knight');
+			return this.units.includes("knight");
 		},
 		isWatchTowerWorld: function () {
-			return 'watchtower' in this.buildings;
+			return "watchtower" in this.buildings;
 		},
 		loadJS: function (url, callback) {
-			let scriptTag = document.createElement('script');
+			let scriptTag = document.createElement("script");
 			scriptTag.src = url;
 			scriptTag.onload = callback;
 			scriptTag.onreadystatechange = callback;
@@ -773,11 +897,13 @@ if (typeof window.twSDK === 'undefined') {
 							<strong>
 								${this.tt(this.scriptData.name)} ${this.scriptData.version}
 							</strong> -
-							<a href="${this.scriptData.authorUrl}" target="_blank" rel="noreferrer noopener">
+							<a href="${
+								this.scriptData.authorUrl
+							}" target="_blank" rel="noreferrer noopener">
 								${this.scriptData.author}
 							</a> -
 							<a href="${this.scriptData.helpLink}" target="_blank" rel="noreferrer noopener">
-								${this.tt('Help')}
+								${this.tt("Help")}
 							</a>
 						</small>
 					</div>
@@ -800,8 +926,8 @@ if (typeof window.twSDK === 'undefined') {
 			`;
 
 			if (jQuery(`#${id}`).length < 1) {
-				jQuery('#contentContainer').prepend(content);
-				jQuery('#mobileContent').prepend(content);
+				jQuery("#contentContainer").prepend(content);
+				jQuery("#mobileContent").prepend(content);
 			} else {
 				jQuery(`.${mainClass}-body`).html(body);
 			}
@@ -824,11 +950,13 @@ if (typeof window.twSDK === 'undefined') {
 							<strong>
 								${this.tt(this.scriptData.name)} ${this.scriptData.version}
 							</strong> -
-							<a href="${this.scriptData.authorUrl}" target="_blank" rel="noreferrer noopener">
+							<a href="${
+								this.scriptData.authorUrl
+							}" target="_blank" rel="noreferrer noopener">
 								${this.scriptData.author}
 							</a> -
 							<a href="${this.scriptData.helpLink}" target="_blank" rel="noreferrer noopener">
-								${this.tt('Help')}
+								${this.tt("Help")}
 							</a>
 						</small>
 					</div>
@@ -836,7 +964,7 @@ if (typeof window.twSDK === 'undefined') {
 				</div>
 				<style>
 					.${mainClass} { position: fixed; top: 10vw; right: 10vw; z-index: 99999; border: 2px solid #7d510f; border-radius: 10px; padding: 10px; width: ${
-				width ?? '360px'
+				width ?? "360px"
 			}; overflow-y: auto; padding: 10px; background: #e3d5b3 url('/graphic/index/main_bg.jpg') scroll right top repeat; }
 					.${mainClass} * { box-sizing: border-box; }
 
@@ -850,12 +978,12 @@ if (typeof window.twSDK === 'undefined') {
 
 			if (jQuery(`#${id}`).length < 1) {
 				if (mobiledevice) {
-					jQuery('#content_value').prepend(content);
+					jQuery("#content_value").prepend(content);
 				} else {
-					jQuery('#contentContainer').prepend(content);
+					jQuery("#contentContainer").prepend(content);
 					jQuery(`#${id}`).draggable();
 
-					jQuery(`#${id} .custom-close-button`).on('click', function (e) {
+					jQuery(`#${id} .custom-close-button`).on("click", function (e) {
 						e.preventDefault();
 						jQuery(`#${id}`).remove();
 					});
@@ -933,11 +1061,11 @@ if (typeof window.twSDK === 'undefined') {
 			const minutes = Math.floor(timestamp / 60) - hours * 60;
 			const seconds = timestamp % 60;
 			return (
-				hours.toString().padStart(2, '0') +
-				':' +
-				minutes.toString().padStart(2, '0') +
-				':' +
-				seconds.toString().padStart(2, '0')
+				hours.toString().padStart(2, "0") +
+				":" +
+				minutes.toString().padStart(2, "0") +
+				":" +
+				seconds.toString().padStart(2, "0")
 			);
 		},
 		setUpdateProgress: function (elementToUpdate, valueToSet) {
@@ -947,7 +1075,7 @@ if (typeof window.twSDK === 'undefined') {
 			return array.sort((a, b) => b[key] - a[key]);
 		},
 		startProgressBar: function (total) {
-			const width = jQuery('#contentContainer')[0].clientWidth;
+			const width = jQuery("#contentContainer")[0].clientWidth;
 			const preloaderContent = `
 				<div id="progressbar" class="progress-bar" style="margin-bottom:12px;">
 					<span class="count label">0/${total}</span>
@@ -958,48 +1086,48 @@ if (typeof window.twSDK === 'undefined') {
 					</div>
 				</div>
 			`;
-			jQuery('#contentContainer').eq(0).prepend(preloaderContent);
+			jQuery("#contentContainer").eq(0).prepend(preloaderContent);
 		},
 		sumOfArrayItemValues: function (array) {
 			return array.reduce((a, b) => a + b, 0);
 		},
 		timeAgo: function (seconds) {
 			var interval = seconds / 31536000;
-			if (interval > 1) return Math.floor(interval) + ' Y';
+			if (interval > 1) return Math.floor(interval) + " Y";
 
 			interval = seconds / 2592000;
-			if (interval > 1) return Math.floor(interval) + ' M';
+			if (interval > 1) return Math.floor(interval) + " M";
 
 			interval = seconds / 86400;
-			if (interval > 1) return Math.floor(interval) + ' D';
+			if (interval > 1) return Math.floor(interval) + " D";
 
 			interval = seconds / 3600;
-			if (interval > 1) return Math.floor(interval) + ' H';
+			if (interval > 1) return Math.floor(interval) + " H";
 
 			interval = seconds / 60;
-			if (interval > 1) return Math.floor(interval) + ' m';
+			if (interval > 1) return Math.floor(interval) + " m";
 
-			return Math.floor(seconds) + ' s';
+			return Math.floor(seconds) + " s";
 		},
 		tt: function (string) {
 			if (this.translations[game_data.locale] !== undefined) {
 				return this.translations[game_data.locale][string];
 			} else {
-				return this.translations['en_DK'][string];
+				return this.translations["en_DK"][string];
 			}
 		},
 		updateProgress: function (elementToUpate, itemsLength, index) {
 			jQuery(elementToUpate).text(`${index}/${itemsLength}`);
 		},
 		updateProgressBar: function (index, total) {
-			jQuery('#progress').css('width', `${((index + 1) / total) * 100}%`);
-			jQuery('.count').text(`${index + 1}/${total}`);
+			jQuery("#progress").css("width", `${((index + 1) / total) * 100}%`);
+			jQuery(".count").text(`${index + 1}/${total}`);
 			if (index + 1 == total) {
-				jQuery('#progressbar').fadeOut(1000);
+				jQuery("#progressbar").fadeOut(1000);
 			}
 		},
 		toggleUploadButtonStatus: function (elementToToggle) {
-			jQuery(elementToToggle).attr('disabled', (i, v) => !v);
+			jQuery(elementToToggle).attr("disabled", (i, v) => !v);
 		},
 		xml2json: function ($xml) {
 			let data = {};
@@ -1007,9 +1135,9 @@ if (typeof window.twSDK === 'undefined') {
 			$.each($xml.children(), function (i) {
 				let $this = $(this);
 				if ($this.children().length > 0) {
-					data[$this.prop('tagName')] = _self.xml2json($this);
+					data[$this.prop("tagName")] = _self.xml2json($this);
 				} else {
-					data[$this.prop('tagName')] = $.trim($this.text());
+					data[$this.prop("tagName")] = $.trim($this.text());
 				}
 			});
 			return data;
@@ -1019,7 +1147,7 @@ if (typeof window.twSDK === 'undefined') {
 			const LAST_UPDATED_TIME = localStorage.getItem(`${entity}_last_updated`);
 
 			// check if entity is allowed and can be fetched
-			const allowedEntities = ['village', 'player', 'ally'];
+			const allowedEntities = ["village", "player", "ally"];
 			if (!allowedEntities.includes(entity)) {
 				throw new Error(`Entity ${entity} does not exist!`);
 			}
@@ -1040,7 +1168,10 @@ if (typeof window.twSDK === 'undefined') {
 					const response = await jQuery.ajax(DATA_URL);
 					const data = this.csvToArray(response);
 					localStorage.setItem(`${entity}`, JSON.stringify(data));
-					localStorage.setItem(`${entity}_last_updated`, Date.parse(new Date()));
+					localStorage.setItem(
+						`${entity}_last_updated`,
+						Date.parse(new Date())
+					);
 					return data;
 				} catch (error) {
 					throw Error(`Error fetching ${DATA_URL}`);
@@ -1049,7 +1180,10 @@ if (typeof window.twSDK === 'undefined') {
 
 			// decide what to do based on current time and last updated entity time
 			if (LAST_UPDATED_TIME !== null) {
-				if (Date.parse(new Date()) >= parseInt(LAST_UPDATED_TIME) + TIME_INTERVAL) {
+				if (
+					Date.parse(new Date()) >=
+					parseInt(LAST_UPDATED_TIME) + TIME_INTERVAL
+				) {
 					worldData[entity] = await fetchDataAndSave();
 				} else {
 					worldData[entity] = JSON.parse(localStorage.getItem(`${entity}`));
@@ -1063,8 +1197,15 @@ if (typeof window.twSDK === 'undefined') {
 
 		// initialize library
 		init: function (scriptConfig) {
-			const { scriptData, translations, allowedMarkets, allowedScreens, allowedModes, isDebug, enableCountApi } =
-				scriptConfig;
+			const {
+				scriptData,
+				translations,
+				allowedMarkets,
+				allowedScreens,
+				allowedModes,
+				isDebug,
+				enableCountApi,
+			} = scriptConfig;
 
 			this.scriptData = scriptData;
 			this.translations = translations;
