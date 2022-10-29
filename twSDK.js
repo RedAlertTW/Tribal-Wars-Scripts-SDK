@@ -202,9 +202,9 @@ if (typeof window.twSDK === "undefined") {
 				.ra-table-v2 th,
 				.ra-table-v2 td { text-align: left; }
 
-				.ra-table-v3 { border: 2px solid #93763d; }
+				.ra-table-v3 { border: 2px solid #bd9c5a; }
 				.ra-table-v3 th,
-				.ra-table-v3 td { border-collapse: separate; border: 1px solid #93763d; text-align: left; }
+				.ra-table-v3 td { border-collapse: separate; border: 1px solid #bd9c5a; text-align: left; }
 
 				/* Inputs */
 				.ra-textarea { width: 100%; height: 80px; resize: none; }
