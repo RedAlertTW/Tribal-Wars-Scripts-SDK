@@ -1,6 +1,6 @@
 /*
 	NAME: Tribal Wars Scripts Library
-	VERSION: 0.5.4 (beta version)
+	VERSION: 0.5.5 (beta version)
 	LAST UPDATED AT: 2022-12-02
 	AUTHOR: RedAlert (RedAlert#9859)
 	AUTHOR URL: https://twscripts.dev/
@@ -37,6 +37,7 @@ if (typeof window.twSDK === "undefined") {
 		worldDataPlayers: "map/player.txt",
 		worldDataTribes: "map/ally.txt",
 		// game constants
+		// https://help.tribalwars.net/wiki/Points
 		buildingPoints: {
 			main: [
 				10, 2, 2, 3, 4, 4, 5, 6, 7, 9, 10, 12, 15, 18, 21, 26, 31, 37, 44, 53,
@@ -107,6 +108,9 @@ if (typeof window.twSDK === "undefined") {
 			knight: 10,
 			snob: 100,
 		},
+		// https://help.tribalwars.net/wiki/Timber_camp
+		// https://help.tribalwars.net/wiki/Clay_pit
+		// https://help.tribalwars.net/wiki/Iron_mine
 		resPerHour: {
 			0: 2,
 			1: 30,
