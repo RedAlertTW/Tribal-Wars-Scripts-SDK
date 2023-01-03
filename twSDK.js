@@ -324,12 +324,12 @@ if (typeof window.twSDK === "undefined") {
 		csvToArray: function (strData, strDelimiter = ",") {
 			var objPattern = new RegExp(
 				"(\\" +
-					strDelimiter +
-					"|\\r?\\n|\\r|^)" +
-					'(?:"([^"]*(?:""[^"]*)*)"|' +
-					'([^"\\' +
-					strDelimiter +
-					"\\r\\n]*))",
+				strDelimiter +
+				"|\\r?\\n|\\r|^)" +
+				'(?:"([^"]*(?:""[^"]*)*)"|' +
+				'([^"\\' +
+				strDelimiter +
+				"\\r\\n]*))",
 				"gi"
 			);
 			var arrData = [[]];
@@ -906,9 +906,8 @@ if (typeof window.twSDK === "undefined") {
 							<strong>
 								${this.tt(this.scriptData.name)} ${this.scriptData.version}
 							</strong> -
-							<a href="${
-								this.scriptData.authorUrl
-							}" target="_blank" rel="noreferrer noopener">
+							<a href="${this.scriptData.authorUrl
+				}" target="_blank" rel="noreferrer noopener">
 								${this.scriptData.author}
 							</a> -
 							<a href="${this.scriptData.helpLink}" target="_blank" rel="noreferrer noopener">
@@ -959,9 +958,8 @@ if (typeof window.twSDK === "undefined") {
 							<strong>
 								${this.tt(this.scriptData.name)} ${this.scriptData.version}
 							</strong> -
-							<a href="${
-								this.scriptData.authorUrl
-							}" target="_blank" rel="noreferrer noopener">
+							<a href="${this.scriptData.authorUrl
+				}" target="_blank" rel="noreferrer noopener">
 								${this.scriptData.author}
 							</a> -
 							<a href="${this.scriptData.helpLink}" target="_blank" rel="noreferrer noopener">
@@ -972,9 +970,8 @@ if (typeof window.twSDK === "undefined") {
 					<a class="popup_box_close custom-close-button" href="#">&nbsp;</a>
 				</div>
 				<style>
-					.${mainClass} { position: fixed; top: 10vw; right: 10vw; z-index: 99999; border: 2px solid #7d510f; border-radius: 10px; padding: 10px; width: ${
-				width ?? "360px"
-			}; overflow-y: auto; padding: 10px; background: #e3d5b3 url('/graphic/index/main_bg.jpg') scroll right top repeat; }
+					.${mainClass} { position: fixed; top: 10vw; right: 10vw; z-index: 99999; border: 2px solid #7d510f; border-radius: 10px; padding: 10px; width: ${width ?? "360px"
+				}; overflow-y: auto; padding: 10px; background: #e3d5b3 url('/graphic/index/main_bg.jpg') scroll right top repeat; }
 					.${mainClass} * { box-sizing: border-box; }
 
 					${globalStyle}
