@@ -1,7 +1,7 @@
 /*
 	NAME: Tribal Wars Scripts Library
-	VERSION: 0.5.6 (beta version)
-	LAST UPDATED AT: 2022-12-04
+	VERSION: 0.5.9 (beta version)
+	LAST UPDATED AT: 2023-01-14
 	AUTHOR: RedAlert (RedAlert#9859)
 	AUTHOR URL: https://twscripts.dev/
 	CONTRIBUTORS: Shinko to Kuma; Sass
@@ -30,6 +30,7 @@ if (typeof window.twSDK === "undefined") {
 		units: game_data.units,
 		buildings: game_data.village.buildings,
 		coordsRegex: /[0-9]{3}\|[0-9]{3}/g,
+		dateTimeMatch: /(?:[A-Z][a-z]{2}\s+\d{1,2},\s*\d{0,4}\s+|today\s+at\s+|tomorrow\s+at\s+)\d{1,2}:\d{2}:\d{2}:?\.?\d{0,3}/,
 		worldInfoInterface: "/interface.php?func=get_config",
 		unitInfoInterface: "/interface.php?func=get_unit_info",
 		buildingInfoInterface: "/interface.php?func=get_building_info",
@@ -257,6 +258,52 @@ if (typeof window.twSDK === "undefined") {
 				}
 			`;
 		},
+		buildUnitsPicker: function (selectedUnits, unitsToIgnore) {
+			let unitsTable = ``;
+
+			let thUnits = ``;
+			let tableRow = ``;
+
+			game_data.units.forEach((unit) => {
+				if (!unitsToIgnore.includes(unit)) {
+					let checked = '';
+					if (selectedUnits.includes(unit)) {
+						checked = `checked`;
+					}
+
+					thUnits += `
+						<th class="ra-text-center">
+							<label for="unit_${unit}">
+								<img src="/graphic/unit/unit_${unit}.png">
+							</label>
+						</th>
+					`;
+
+					tableRow += `
+						<td class="ra-text-center">
+							<input name="ra_chosen_units" type="checkbox" ${checked} id="unit_${unit}" class="ra-unit-selector" value="${unit}" />
+						</td>
+					`;
+				}
+			});
+
+			unitsTable = `
+				<table class="ra-table ra-table-v2" width="100%" id="raUnitSelector">
+					<thead>
+						<tr>
+							${thUnits}
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							${tableRow}
+						</tr>
+					</tbody>
+				</table>
+			`;
+
+			return unitsTable;
+		},
 		calculateCoinsNeededForNthNoble: function (noble) {
 			return (noble * noble + noble) / 2;
 		},
@@ -362,6 +409,25 @@ if (typeof window.twSDK === "undefined") {
 				}
 			});
 			return playerVillages;
+		},
+		formatAsNumber: function (number) {
+			return parseInt(number).toLocaleString("de");
+		},
+		formatDateTime: function (dateTime) {
+			dateTime = new Date(dateTime);
+			return (
+				this.zeroPad(dateTime.getDate(), 2) +
+				'/' +
+				this.zeroPad(dateTime.getMonth() + 1, 2) +
+				'/' +
+				dateTime.getFullYear() +
+				' ' +
+				this.zeroPad(dateTime.getHours(), 2) +
+				':' +
+				this.zeroPad(dateTime.getMinutes(), 2) +
+				':' +
+				this.zeroPad(dateTime.getSeconds(), 2)
+			);
 		},
 		frequencyCounter: function (array) {
 			return array.reduce(function (acc, curr) {
@@ -863,9 +929,6 @@ if (typeof window.twSDK === "undefined") {
 				// Also we also set the initial value of reduce() to an empty object
 			}, {});
 		},
-		formatAsNumber: function (number) {
-			return parseInt(number).toLocaleString("de");
-		},
 		isArcherWorld: function () {
 			return this.units.includes("archer");
 		},
@@ -1199,6 +1262,13 @@ if (typeof window.twSDK === "undefined") {
 			}
 
 			return worldData[entity];
+		},
+		zeroPad: function (num, count) {
+			var numZeropad = num + '';
+			while (numZeropad.length < count) {
+				numZeropad = '0' + numZeropad;
+			}
+			return numZeropad;
 		},
 
 		// initialize library
