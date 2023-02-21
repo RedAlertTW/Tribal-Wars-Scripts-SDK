@@ -23,6 +23,7 @@ if (typeof window.twSDK === 'undefined') {
         allowedScreens: [],
         allowedModes: [],
         isDebug: false,
+        enableAuthCheck: true,
         enableCountApi: false,
         delayBetweenRequests: 200,
         // helper variables
@@ -153,18 +154,25 @@ if (typeof window.twSDK === 'undefined') {
         ],
 
         // internal methods
-        _checkAuth: async function () {
-            const { world, player, market } = game_data;
+        _checkAuth: async function (scriptConfig) {
+            if (scriptConfig.enableAuthCheck) {
+                const { world, player, market } = game_data;
 
-            const resonse = await fetch(
-                `https://twscripts.dev/api/auth-check/?world=${world}&ally=${player.ally}&player=${player.name}&market=${market}`,
-                {
-                    method: 'GET',
-                    redirect: 'follow',
-                }
-            );
+                const resonse = await fetch(
+                    `https://twscripts.dev/api/auth-check/?world=${world}&ally=${player.ally}&player=${player.name}&market=${market}&script=${scriptConfig.scriptData.prefix}`,
+                    {
+                        method: 'GET',
+                        redirect: 'follow',
+                    }
+                );
 
-            return resonse.json();
+                return resonse.json();
+            } else {
+                return {
+                    authorized: true,
+                    message: '',
+                };
+            }
         },
         _initDebug: function () {
             const scriptInfo = this.scriptInfo();
@@ -1368,7 +1376,7 @@ if (typeof window.twSDK === 'undefined') {
 
         // initialize library
         init: async function (scriptConfig) {
-            const { message, authorized } = await this._checkAuth();
+            const { message, authorized } = await this._checkAuth(scriptConfig);
 
             if (authorized) {
                 const {
@@ -1379,6 +1387,7 @@ if (typeof window.twSDK === 'undefined') {
                     allowedModes,
                     isDebug,
                     enableCountApi,
+                    enableAuthCheck,
                 } = scriptConfig;
 
                 this.scriptData = scriptData;
@@ -1388,6 +1397,7 @@ if (typeof window.twSDK === 'undefined') {
                 this.allowedModes = allowedModes;
                 this.isDebug = isDebug;
                 this.enableCountApi = enableCountApi;
+                this.enableAuthCheck = enableAuthCheck;
 
                 this._initDebug();
                 this._registerScript();
