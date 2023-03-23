@@ -1,17 +1,17 @@
 /*
-	NAME: Tribal Wars Scripts Library
-	VERSION: 0.6.1 (beta version)
-	LAST UPDATED AT: 2023-02-20
-	AUTHOR: RedAlert (RedAlert#9859)
-	AUTHOR URL: https://twscripts.dev/
-	CONTRIBUTORS: Shinko to Kuma; Sass
-	HELP: https://github.com/RedAlertTW/Tribal-Wars-Scripts-SDK
-	STATUS: Work in progress. Not finished 100%.
+    NAME: Tribal Wars Scripts Library
+    VERSION: 0.6.1 (beta version)
+    LAST UPDATED AT: 2023-02-20
+    AUTHOR: RedAlert (RedAlert#9859)
+    AUTHOR URL: https://twscripts.dev/
+    CONTRIBUTORS: Shinko to Kuma; Sass
+    HELP: https://github.com/RedAlertTW/Tribal-Wars-Scripts-SDK
+    STATUS: Work in progress. Not finished 100%.
 
-	This software is provided 'as-is', without any express or implied warranty.
-	In no event will the author/s be held liable for any damages arising from the use of this software.
-	It is not allowed to clone, rehost, re-distribute and all other forms of copying this code without permission from the author/s.
-	This notice may not be removed or altered from any source distribution.
+    This software is provided 'as-is', without any express or implied warranty.
+    In no event will the author/s be held liable for any damages arising from the use of this software.
+    It is not allowed to clone, rehost, re-distribute and all other forms of copying this code without permission from the author/s.
+    This notice may not be removed or altered from any source distribution.
  */
 
 if (typeof window.twSDK === 'undefined') {
@@ -399,12 +399,12 @@ if (typeof window.twSDK === 'undefined') {
         csvToArray: function (strData, strDelimiter = ',') {
             var objPattern = new RegExp(
                 '(\\' +
-                    strDelimiter +
-                    '|\\r?\\n|\\r|^)' +
-                    '(?:"([^"]*(?:""[^"]*)*)"|' +
-                    '([^"\\' +
-                    strDelimiter +
-                    '\\r\\n]*))',
+                strDelimiter +
+                '|\\r?\\n|\\r|^)' +
+                '(?:"([^"]*(?:""[^"]*)*)"|' +
+                '([^"\\' +
+                strDelimiter +
+                '\\r\\n]*))',
                 'gi'
             );
             var arrData = [[]];
@@ -1062,9 +1062,8 @@ if (typeof window.twSDK === 'undefined') {
 							<strong>
 								${this.tt(this.scriptData.name)} ${this.scriptData.version}
 							</strong> -
-							<a href="${
-                                this.scriptData.authorUrl
-                            }" target="_blank" rel="noreferrer noopener">
+							<a href="${this.scriptData.authorUrl
+                }" target="_blank" rel="noreferrer noopener">
 								${this.scriptData.author}
 							</a> -
 							<a href="${this.scriptData.helpLink}" target="_blank" rel="noreferrer noopener">
@@ -1115,9 +1114,8 @@ if (typeof window.twSDK === 'undefined') {
 							<strong>
 								${this.tt(this.scriptData.name)} ${this.scriptData.version}
 							</strong> -
-							<a href="${
-                                this.scriptData.authorUrl
-                            }" target="_blank" rel="noreferrer noopener">
+							<a href="${this.scriptData.authorUrl
+                }" target="_blank" rel="noreferrer noopener">
 								${this.scriptData.author}
 							</a> -
 							<a href="${this.scriptData.helpLink}" target="_blank" rel="noreferrer noopener">
@@ -1128,9 +1126,8 @@ if (typeof window.twSDK === 'undefined') {
 					<a class="popup_box_close custom-close-button" href="#">&nbsp;</a>
 				</div>
 				<style>
-					.${mainClass} { position: fixed; top: 10vw; right: 10vw; z-index: 99999; border: 2px solid #7d510f; border-radius: 10px; padding: 10px; width: ${
-                width ?? '360px'
-            }; overflow-y: auto; padding: 10px; background: #e3d5b3 url('/graphic/index/main_bg.jpg') scroll right top repeat; }
+					.${mainClass} { position: fixed; top: 10vw; right: 10vw; z-index: 99999; border: 2px solid #7d510f; border-radius: 10px; padding: 10px; width: ${width ?? '360px'
+                }; overflow-y: auto; padding: 10px; background: #e3d5b3 url('/graphic/index/main_bg.jpg') scroll right top repeat; }
 					.${mainClass} * { box-sizing: border-box; }
 
 					${globalStyle}
