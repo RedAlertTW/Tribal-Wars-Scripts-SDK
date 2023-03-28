@@ -1,6 +1,6 @@
 /*
     NAME: Tribal Wars Scripts Library
-    VERSION: 0.6.3 (beta version)
+    VERSION: 0.7.0 (beta version)
     LAST UPDATED AT: 2023-03-28
     AUTHOR: RedAlert (RedAlert#9859)
     AUTHOR URL: https://twscripts.dev/
@@ -28,6 +28,7 @@ if (typeof window.twSDK === 'undefined') {
         delayBetweenRequests: 200,
         // helper variables
         market: game_data.market,
+        masterAuthCheckEnable: false,
         units: game_data.units,
         buildings: game_data.village.buildings,
         coordsRegex: /[0-9]{3}\|[0-9]{3}/g,
@@ -152,10 +153,28 @@ if (typeof window.twSDK === 'undefined') {
             1.1, 1.3, 1.5, 1.7, 2, 2.3, 2.6, 3, 3.4, 3.9, 4.4, 5.1, 5.8, 6.7,
             7.6, 8.7, 10, 11.5, 13.1, 15,
         ],
+        // different markets might have different rules when it comes to scripts, this helps with that
+        rules: {
+            global: {
+                stats: true,
+                authCheck: true,
+            },
+            en: {
+                stats: true,
+                authCheck: false,
+            },
+            us: {
+                stats: true,
+                authCheck: false
+            }
+        },
 
         // internal methods
         _checkAuth: async function (scriptConfig) {
-            if (scriptConfig.enableAuthCheck) {
+            const { market, rules } = this;
+            const isCheckAuthAllowed = rules[market]?.authCheck ?? rules.global.authCheck;
+
+            if (scriptConfig.enableAuthCheck && isCheckAuthAllowed) {
                 const { world, market } = game_data;
 
                 const response = await fetch(
@@ -203,7 +222,10 @@ if (typeof window.twSDK === 'undefined') {
             }
         },
         _registerScript: function () {
-            if (this.enableCountApi) {
+            const { market, rules } = this;
+            const isStatsAllowed = rules[market]?.stats ?? rules.global.stats;
+
+            if (this.enableCountApi && isStatsAllowed) {
                 const { prefix, author } = this.scriptData;
                 const scriptInfo = this.scriptInfo();
                 jQuery.getJSON(
