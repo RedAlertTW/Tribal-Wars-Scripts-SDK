@@ -1,7 +1,7 @@
 /*
     NAME: Tribal Wars Scripts Library
-    VERSION: 0.6.1 (beta version)
-    LAST UPDATED AT: 2023-02-20
+    VERSION: 0.6.2 (beta version)
+    LAST UPDATED AT: 2023-03-28
     AUTHOR: RedAlert (RedAlert#9859)
     AUTHOR URL: https://twscripts.dev/
     CONTRIBUTORS: Shinko to Kuma; Sass
@@ -156,10 +156,10 @@ if (typeof window.twSDK === 'undefined') {
         // internal methods
         _checkAuth: async function (scriptConfig) {
             if (scriptConfig.enableAuthCheck) {
-                const { world, player, market } = game_data;
+                const { world, market } = game_data;
 
                 const resonse = await fetch(
-                    `https://twscripts.dev/api/auth-check/?world=${world}&ally=${player.ally}&player=${player.name}&market=${market}&script=${scriptConfig.scriptData.prefix}`,
+                    `https://twscripts.dev/api/auth-check/?world=${world}&market=${market}&script=${scriptConfig.scriptData.prefix}`,
                     {
                         method: 'GET',
                         redirect: 'follow',
