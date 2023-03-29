@@ -1,6 +1,6 @@
 /*
     NAME: Tribal Wars Scripts Library
-    VERSION: 0.7.0 (beta version)
+    VERSION: 0.7.1 (beta version)
     LAST UPDATED AT: 2023-03-28
     AUTHOR: RedAlert (RedAlert#9859)
     AUTHOR URL: https://twscripts.dev/
@@ -1068,7 +1068,6 @@ if (typeof window.twSDK === 'undefined') {
         },
         renderBoxWidget: function (body, id, mainClass, customStyle) {
             const globalStyle = this.addGlobalStyle();
-            const specialContent = this.renderSpecialContent(mainClass);
 
             const content = `
 				<div class="${mainClass} ra-box-widget" id="${id}">
@@ -1078,7 +1077,6 @@ if (typeof window.twSDK === 'undefined') {
 					<div class="${mainClass}-body">
 						${body}
 					</div>
-					${specialContent}
 					<div class="${mainClass}-footer">
 						<small>
 							<strong>
@@ -1120,7 +1118,6 @@ if (typeof window.twSDK === 'undefined') {
         },
         renderFixedWidget: function (body, id, mainClass, customStyle, width) {
             const globalStyle = this.addGlobalStyle();
-            const specialContent = this.renderSpecialContent(mainClass);
 
             const content = `
 				<div class="${mainClass} ra-fixed-widget" id="${id}">
@@ -1130,7 +1127,6 @@ if (typeof window.twSDK === 'undefined') {
 					<div class="${mainClass}-body">
 						${body}
 					</div>
-					${specialContent}
 					<div class="${mainClass}-footer">
 						<small>
 							<strong>
@@ -1178,67 +1174,6 @@ if (typeof window.twSDK === 'undefined') {
             } else {
                 jQuery(`.${mainClass}-body`).html(body);
             }
-        },
-        renderSpecialContent: function (mainClass) {
-            let specialContent = ``;
-
-            const today = new Date();
-            const dayOfMonth = today.getDate();
-            const month = today.getMonth();
-
-            // April 1 (April Fool's Day)
-            if (dayOfMonth === 1 && month === 3) {
-                specialContent = `
-					<div class="${mainClass}-special-content ra-mb15">
-						<details class="ra-details">
-							<summary>What monster plays the most April Fools’ jokes?</summary>
-							<p>Prankenstein.</p>
-						</details>
-						<details class="ra-details">
-							<summary>Did you hear about the guy who swapped the labels on the pumps at the gas station?</summary>
-							<p>It was an April Fuels' joke.</p>
-						</details>
-						<details class="ra-details">
-							<summary>Why was the donkey annoying his friend?</summary>
-							<p>It was April Mules' Day.</p>
-						</details>
-						<details class="ra-details">
-							<summary>Which day of the year do monkeys like best?</summary>
-							<p>The first of Ape-ril.</p>
-						</details>
-						<details class="ra-details">
-							<summary>Which day is the worst to propose on?</summary>
-							<p>April Fools' Day.</p>
-						</details>
-					</div>
-				`;
-            }
-
-            // April 22 (Earth's Day)
-            if (dayOfMonth === 22 && month === 3) {
-                specialContent = `
-					<div class="${mainClass}-special-content ra-mb15 ra-tac">
-						<img src="https://twscripts.dev/scripts/earth-day.webp" class="ra-earth-day-image" />
-					</div>
-					<style>
-						.ra-earth-day-image { max-width: 300px; width: 100%; margin: 0 auto; display: inline-block; }
-					</style>
-				`;
-            }
-
-            // May 8 (International Mother's Day)
-            if (dayOfMonth === 08 && month === 4) {
-                specialContent = `
-					<div class="${mainClass}-special-content ra-mb15 ra-tac">
-						<img src="https://twscripts.dev/scripts/happy-mothers-day.jpg" class="ra-happy-mothers-day" />
-					</div>
-					<style>
-						.ra-happy-mothers-day { max-width: 300px; width: 100%; margin: 0 auto; display: inline-block; }
-					</style>
-				`;
-            }
-
-            return specialContent;
         },
         scriptInfo: function () {
             return `[${this.scriptData.name} ${this.scriptData.version}]`;
