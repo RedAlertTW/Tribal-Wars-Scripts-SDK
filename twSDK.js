@@ -1,7 +1,7 @@
 /*
     NAME: Tribal Wars Scripts Library
-    VERSION: 0.7.3 (beta version)
-    LAST UPDATED AT: 2023-04-15
+    VERSION: 0.7.4 (beta version)
+    LAST UPDATED AT: 2023-04-19
     AUTHOR: RedAlert (RedAlert#9859)
     AUTHOR URL: https://twscripts.dev/
     CONTRIBUTORS: Shinko to Kuma; Sass
@@ -165,14 +165,15 @@ if (typeof window.twSDK === 'undefined') {
             },
             us: {
                 stats: true,
-                authCheck: false
-            }
+                authCheck: false,
+            },
         },
 
         // internal methods
         _checkAuth: async function (scriptConfig) {
             const { market, rules } = this;
-            const isCheckAuthAllowed = rules[market]?.authCheck ?? rules.global.authCheck;
+            const isCheckAuthAllowed =
+                rules[market]?.authCheck ?? rules.global.authCheck;
 
             if (scriptConfig.enableAuthCheck && isCheckAuthAllowed) {
                 const { world, market } = game_data;
@@ -421,22 +422,25 @@ if (typeof window.twSDK === 'undefined') {
         },
         createUUID: function () {
             let dt = new Date().getTime();
-            let uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-                let r = (dt + Math.random() * 16) % 16 | 0;
-                dt = Math.floor(dt / 16);
-                return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
-            });
+            let uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(
+                /[xy]/g,
+                function (c) {
+                    let r = (dt + Math.random() * 16) % 16 | 0;
+                    dt = Math.floor(dt / 16);
+                    return (c == 'x' ? r : (r & 0x3) | 0x8).toString(16);
+                }
+            );
             return uuid;
         },
         csvToArray: function (strData, strDelimiter = ',') {
             var objPattern = new RegExp(
                 '(\\' +
-                strDelimiter +
-                '|\\r?\\n|\\r|^)' +
-                '(?:"([^"]*(?:""[^"]*)*)"|' +
-                '([^"\\' +
-                strDelimiter +
-                '\\r\\n]*))',
+                    strDelimiter +
+                    '|\\r?\\n|\\r|^)' +
+                    '(?:"([^"]*(?:""[^"]*)*)"|' +
+                    '([^"\\' +
+                    strDelimiter +
+                    '\\r\\n]*))',
                 'gi'
             );
             var arrData = [[]];
@@ -1092,8 +1096,9 @@ if (typeof window.twSDK === 'undefined') {
 							<strong>
 								${this.tt(this.scriptData.name)} ${this.scriptData.version}
 							</strong> -
-							<a href="${this.scriptData.authorUrl
-                }" target="_blank" rel="noreferrer noopener">
+							<a href="${
+                                this.scriptData.authorUrl
+                            }" target="_blank" rel="noreferrer noopener">
 								${this.scriptData.author}
 							</a> -
 							<a href="${this.scriptData.helpLink}" target="_blank" rel="noreferrer noopener">
@@ -1142,8 +1147,9 @@ if (typeof window.twSDK === 'undefined') {
 							<strong>
 								${this.tt(this.scriptData.name)} ${this.scriptData.version}
 							</strong> -
-							<a href="${this.scriptData.authorUrl
-                }" target="_blank" rel="noreferrer noopener">
+							<a href="${
+                                this.scriptData.authorUrl
+                            }" target="_blank" rel="noreferrer noopener">
 								${this.scriptData.author}
 							</a> -
 							<a href="${this.scriptData.helpLink}" target="_blank" rel="noreferrer noopener">
@@ -1154,8 +1160,9 @@ if (typeof window.twSDK === 'undefined') {
 					<a class="popup_box_close custom-close-button" href="#">&nbsp;</a>
 				</div>
 				<style>
-					.${mainClass} { position: fixed; top: 10vw; right: 10vw; z-index: 99999; border: 2px solid #7d510f; border-radius: 10px; padding: 10px; width: ${width ?? '360px'
-                }; overflow-y: auto; padding: 10px; background: #e3d5b3 url('/graphic/index/main_bg.jpg') scroll right top repeat; }
+					.${mainClass} { position: fixed; top: 10vw; right: 10vw; z-index: 99999; border: 2px solid #7d510f; border-radius: 10px; padding: 10px; width: ${
+                width ?? '360px'
+            }; overflow-y: auto; padding: 10px; background: #e3d5b3 url('/graphic/index/main_bg.jpg') scroll right top repeat; }
 					.${mainClass} * { box-sizing: border-box; }
 
 					${globalStyle}
