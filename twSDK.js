@@ -1,6 +1,6 @@
 /*
     NAME: Tribal Wars Scripts Library
-    VERSION: 0.8.0 (beta version)
+    VERSION: 0.8.1 (beta version)
     LAST UPDATED AT: 2023-05-11
     AUTHOR: RedAlert (RedAlert#9859)
     AUTHOR URL: https://twscripts.dev/
@@ -262,7 +262,11 @@ window.twSDK = {
             }
         `;
     },
-    buildUnitsPicker: function (selectedUnits, unitsToIgnore) {
+    buildUnitsPicker: function (
+        selectedUnits,
+        unitsToIgnore,
+        type = 'checkbox'
+    ) {
         let unitsTable = ``;
 
         let thUnits = ``;
@@ -285,7 +289,7 @@ window.twSDK = {
 
                 tableRow += `
                     <td class="ra-text-center">
-                        <input name="ra_chosen_units" type="checkbox" ${checked} id="unit_${unit}" class="ra-unit-selector" value="${unit}" />
+                        <input name="ra_chosen_units" type="${type}" ${checked} id="unit_${unit}" class="ra-unit-selector" value="${unit}" />
                     </td>
                 `;
             }
