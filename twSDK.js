@@ -1,7 +1,7 @@
 /*
     NAME: Tribal Wars Scripts Library
-    VERSION: 0.8.3 (beta version)
-    LAST UPDATED AT: 2023-05-23
+    VERSION: 0.8.2 (beta version)
+    LAST UPDATED AT: 2023-05-17
     AUTHOR: RedAlert (RedAlert#9859)
     AUTHOR URL: https://twscripts.dev/
     CONTRIBUTORS: Shinko to Kuma; Sass
@@ -1357,21 +1357,14 @@ window.twSDK = {
 
         // Helpers: Save to IndexedDb storage
         async function saveToIndexedDbStorage(dbName, table, keyId, data) {
-            const dbConnect = indexedDB.open(dbName, Date.parse(new Date()));
+            const dbConnect = indexedDB.open(dbName, 1);
 
-            dbConnect.onupgradeneeded = function (event) {
-                const db = event.target.result;
-
-                if (event.oldVersion < Date.parse(new Date())) {
-                    db.deleteObjectStore(table);
-                }
-
-                // Create new Object Store
+            dbConnect.onupgradeneeded = function () {
+                const db = dbConnect.result;
                 const dataStore = db.createObjectStore(table, {
                     keyPath: keyId,
                 });
 
-                // Add data to Object Store
                 data.forEach((item) => {
                     dataStore.add(item);
                 });
@@ -1450,7 +1443,6 @@ window.twSDK = {
                 Date.parse(new Date()) >=
                 parseInt(LAST_UPDATED_TIME) + TIME_INTERVAL
             ) {
-                UI.SuccessMessage(`${entity} data has been updated!`);
                 worldData[entity] = await fetchDataAndSave();
             } else {
                 worldData[entity] = await getAllData(
@@ -1459,7 +1451,6 @@ window.twSDK = {
                 );
             }
         } else {
-            UI.SuccessMessage(`${entity} data has been updated!`);
             worldData[entity] = await fetchDataAndSave();
         }
 
