@@ -1,7 +1,7 @@
 /*
     NAME: Tribal Wars Scripts Library
-    VERSION: 0.8.2 (beta version)
-    LAST UPDATED AT: 2023-05-17
+    VERSION: 0.8.3 (beta version)
+    LAST UPDATED AT: 2023-05-31
     AUTHOR: RedAlert (RedAlert#9859)
     AUTHOR URL: https://twscripts.dev/
     CONTRIBUTORS: Shinko to Kuma; Sass
@@ -438,6 +438,48 @@ window.twSDK = {
             arrData[arrData.length - 1].push(strMatchedValue);
         }
         return arrData;
+    },
+    decryptString: function (str) {
+        const alphabet =
+            'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 !"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
+        let decryptedStr = '';
+
+        for (let i = 0; i < str.length; i++) {
+            const char = str[i];
+            const index = alphabet.indexOf(char);
+
+            if (index === -1) {
+                // Character is not in the alphabet, leave it as-is
+                decryptedStr += char;
+            } else {
+                // Substitue the character with its corresponding shifted character
+                const shiftedIndex = (index - 3 + 94) % 94;
+                decryptedStr += alphabet[shiftedIndex];
+            }
+        }
+
+        return decryptedStr;
+    },
+    encryptString: function (str) {
+        const alphabet =
+            'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 !"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
+        let encryptedStr = '';
+
+        for (let i = 0; i < str.length; i++) {
+            const char = str[i];
+            const index = alphabet.indexOf(char);
+
+            if (index === -1) {
+                // Character is not in the alphabet, leave it as-is
+                encryptedStr += char;
+            } else {
+                // Substitue the character with its corresponding shifted character
+                const shiftedIndex = (index + 3) % 94;
+                encryptedStr += alphabet[shiftedIndex];
+            }
+        }
+
+        return encryptedStr;
     },
     filterVillagesByPlayerIds: function (playerIds, villages) {
         const playerVillages = [];
