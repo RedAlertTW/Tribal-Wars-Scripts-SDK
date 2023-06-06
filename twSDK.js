@@ -1,7 +1,7 @@
 /*
     NAME: Tribal Wars Scripts Library
-    VERSION: 0.8.3 (beta version)
-    LAST UPDATED AT: 2023-05-31
+    VERSION: 0.8.4 (beta version)
+    LAST UPDATED AT: 2023-06-06
     AUTHOR: RedAlert (RedAlert#9859)
     AUTHOR URL: https://twscripts.dev/
     CONTRIBUTORS: Shinko to Kuma; Sass
@@ -1399,24 +1399,32 @@ window.twSDK = {
 
         // Helpers: Save to IndexedDb storage
         async function saveToIndexedDbStorage(dbName, table, keyId, data) {
-            const dbConnect = indexedDB.open(dbName, 1);
+            const dbConnect = indexedDB.open(dbName);
 
             dbConnect.onupgradeneeded = function () {
                 const db = dbConnect.result;
-                const dataStore = db.createObjectStore(table, {
+                db.createObjectStore(table, {
                     keyPath: keyId,
                 });
+            };
+
+            dbConnect.onsuccess = function () {
+                const db = dbConnect.result;
+                const transaction = db.transaction(table, 'readwrite');
+                const store = transaction.objectStore(table);
 
                 data.forEach((item) => {
-                    dataStore.add(item);
+                    store.add(item);
                 });
+
+                UI.SuccessMessage('Database updated!');
             };
         }
 
         // Helpers: Read all villages from indexedDB
         function getAllData(dbName, table) {
             return new Promise((resolve, reject) => {
-                const dbConnect = indexedDB.open(dbName, 1);
+                const dbConnect = indexedDB.open(dbName);
 
                 dbConnect.onsuccess = () => {
                     const db = dbConnect.result;
