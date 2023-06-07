@@ -1,7 +1,7 @@
 /*
     NAME: Tribal Wars Scripts Library
-    VERSION: 0.8.4 (beta version)
-    LAST UPDATED AT: 2023-06-06
+    VERSION: 0.8.5 (beta version)
+    LAST UPDATED AT: 2023-06-07
     AUTHOR: RedAlert (RedAlert#9859)
     AUTHOR URL: https://twscripts.dev/
     CONTRIBUTORS: Shinko to Kuma; Sass
@@ -1414,7 +1414,7 @@ window.twSDK = {
                 const store = transaction.objectStore(table);
 
                 data.forEach((item) => {
-                    store.add(item);
+                    store.put(item);
                 });
 
                 UI.SuccessMessage('Database updated!');
