@@ -1,7 +1,7 @@
 /*
     NAME: Tribal Wars Scripts Library
-    VERSION: 0.8.5 (beta version)
-    LAST UPDATED AT: 2023-06-07
+    VERSION: 0.8.6 (beta version)
+    LAST UPDATED AT: 2023-06-17
     AUTHOR: RedAlert (RedAlert#9859)
     AUTHOR URL: https://twscripts.dev/
     CONTRIBUTORS: Shinko to Kuma; Sass
@@ -387,7 +387,12 @@ window.twSDK = {
         return this.allowedMarkets.includes(this.market);
     },
     cleanString: function (string) {
-        return decodeURIComponent(string).replace(/\+/g, ' ');
+        try {
+            return decodeURIComponent(string).replace(/\+/g, ' ');
+        } catch (error) {
+            console.error(error, string);
+            return string;
+        }
     },
     copyToClipboard: function (string) {
         navigator.clipboard.writeText(string);
