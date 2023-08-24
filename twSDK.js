@@ -1,7 +1,7 @@
 /*
     NAME: Tribal Wars Scripts Library
-    VERSION: 0.8.8 (beta version)
-    LAST UPDATED AT: 2023-08-21
+    VERSION: 0.8.9 (beta version)
+    LAST UPDATED AT: 2023-08-24
     AUTHOR: RedAlert (redalert_tw)
     AUTHOR URL: https://twscripts.dev/
     CONTRIBUTORS: Shinko to Kuma; Sass
@@ -605,9 +605,18 @@ window.twSDK = {
         return buildingsInfo;
     },
     getContinentByCoord: function (coord) {
-        if (!coord) return '';
-        const coordParts = coord.split('|');
-        return coordParts[1].charAt(0) + coordParts[0].charAt(0);
+        let [x, y] = Array.from(coord.split('|')).map((e) => parseInt(e));
+        for (let i = 0; i < 1000; i += 100) {
+            //x axes
+            for (let j = 0; j < 1000; j += 100) {
+                //y axes
+                if (i >= x && x < i + 100 && j >= y && y < j + 100) {
+                    let nr_continent =
+                        parseInt(y / 100) + '' + parseInt(x / 100);
+                    return nr_continent;
+                }
+            }
+        }
     },
     getContinentsFromCoordinates: function (coordinates) {
         let continents = [];
