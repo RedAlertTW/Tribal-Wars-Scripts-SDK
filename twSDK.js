@@ -1,7 +1,7 @@
 /*
     NAME: Tribal Wars Scripts Library
-    VERSION: 0.8.9 (beta version)
-    LAST UPDATED AT: 2023-08-24
+    VERSION: 0.9.0 (beta version)
+    LAST UPDATED AT: 2023-09-07
     AUTHOR: RedAlert (redalert_tw)
     AUTHOR URL: https://twscripts.dev/
     CONTRIBUTORS: Shinko to Kuma; Sass
@@ -28,6 +28,7 @@ window.twSDK = {
     market: game_data.market,
     masterAuthCheckEnable: false,
     units: game_data.units,
+    village: game_data.village,
     buildings: game_data.village.buildings,
     coordsRegex: /\d{1,3}\|\d{1,3}/g,
     dateTimeMatch:
@@ -1058,13 +1059,13 @@ window.twSDK = {
         return this.units.includes('archer');
     },
     isChurchWorld: function () {
-        return 'church' in this.buildings;
+        return 'church' in this.village.buildings;
     },
     isPaladinWorld: function () {
         return this.units.includes('knight');
     },
     isWatchTowerWorld: function () {
-        return 'watchtower' in this.buildings;
+        return 'watchtower' in this.village.buildings;
     },
     loadJS: function (url, callback) {
         let scriptTag = document.createElement('script');
