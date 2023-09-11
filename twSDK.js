@@ -1,7 +1,7 @@
 /*
     NAME: Tribal Wars Scripts Library
-    VERSION: 0.9.0 (beta version)
-    LAST UPDATED AT: 2023-09-07
+    VERSION: 0.9.1 (beta version)
+    LAST UPDATED AT: 2023-09-11
     AUTHOR: RedAlert (redalert_tw)
     AUTHOR URL: https://twscripts.dev/
     CONTRIBUTORS: Shinko to Kuma; Sass
@@ -181,6 +181,9 @@ window.twSDK = {
             );
         }
     },
+    _debug: function () {
+        return twSDK.getParameterByName('debug') === 'true' ? true : false;
+    },
     _registerScript: function () {
         if (this.enableCountApi) {
             const { prefix } = this.scriptData;
@@ -343,6 +346,10 @@ window.twSDK = {
         const deltaX = Math.abs(x1 - x2);
         const deltaY = Math.abs(y1 - y2);
         return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    },
+    calculatePercentages: function (amount, total) {
+        if (amount === undefined) amount = 0;
+        return parseFloat((amount / total) * 100).toFixed(2);
     },
     calculateTimesByDistance: async function (distance) {
         const _self = this;
@@ -1077,6 +1084,11 @@ window.twSDK = {
     redirectTo: function (location) {
         window.location.assign(game_data.link_base_pure + location);
     },
+    removeDuplicateObjectsFromArray: function (array, prop) {
+        return array.filter((obj, pos, arr) => {
+            return arr.map((mapObj) => mapObj[prop]).indexOf(obj[prop]) === pos;
+        });
+    },
     renderBoxWidget: function (body, id, mainClass, customStyle) {
         const globalStyle = this.addGlobalStyle();
 
@@ -1549,10 +1561,10 @@ window.twSDK = {
         this.allowedMarkets = allowedMarkets;
         this.allowedScreens = allowedScreens;
         this.allowedModes = allowedModes;
-        this.isDebug = isDebug;
+        this.isDebug = twSDK._debug();
         this.enableCountApi = enableCountApi;
 
-        this._initDebug();
-        this._registerScript();
+        twSDK._initDebug();
+        twSDK._registerScript();
     },
 };
