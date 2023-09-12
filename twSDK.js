@@ -1,7 +1,7 @@
 /*
     NAME: Tribal Wars Scripts Library
-    VERSION: 0.9.1 (beta version)
-    LAST UPDATED AT: 2023-09-11
+    VERSION: 0.9.2 (beta version)
+    LAST UPDATED AT: 2023-09-12
     AUTHOR: RedAlert (redalert_tw)
     AUTHOR URL: https://twscripts.dev/
     CONTRIBUTORS: Shinko to Kuma; Sass
@@ -1144,13 +1144,20 @@ window.twSDK = {
             jQuery(`.${mainClass}-body`).html(body);
         }
     },
-    renderFixedWidget: function (body, id, mainClass, customStyle, width) {
+    renderFixedWidget: function (
+        body,
+        id,
+        mainClass,
+        customStyle,
+        width,
+        customName = this.scriptData.name
+    ) {
         const globalStyle = this.addGlobalStyle();
 
         const content = `
             <div class="${mainClass} ra-fixed-widget" id="${id}">
                 <div class="${mainClass}-header">
-                    <h3>${this.tt(this.scriptData.name)}</h3>
+                    <h3>${this.tt(customName)}</h3>
                 </div>
                 <div class="${mainClass}-body">
                     ${body}
@@ -1158,9 +1165,7 @@ window.twSDK = {
                 <div class="${mainClass}-footer">
                     <small>
                         <strong>
-                            ${this.tt(this.scriptData.name)} ${
-            this.scriptData.version
-        }
+                            ${this.tt(customName)} ${this.scriptData.version}
                         </strong> -
                         <a href="${
                             this.scriptData.authorUrl
