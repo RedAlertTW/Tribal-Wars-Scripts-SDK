@@ -1,7 +1,7 @@
 /*
     NAME: Tribal Wars Scripts Library
-    VERSION: 0.9.2 (beta version)
-    LAST UPDATED AT: 2023-09-12
+    VERSION: 0.9.3 (beta version)
+    LAST UPDATED AT: 2023-09-21
     AUTHOR: RedAlert (redalert_tw)
     AUTHOR URL: https://twscripts.dev/
     CONTRIBUTORS: Shinko to Kuma; Sass
@@ -879,13 +879,6 @@ window.twSDK = {
 
         return coordinatesArray;
     },
-    getGameFeatures: function () {
-        const { Premium, FarmAssistent, AccountManager } = game_data.features;
-        const isPA = Premium.active;
-        const isLA = FarmAssistent.active;
-        const isAM = AccountManager.active;
-        return { isPA, isLA, isAM };
-    },
     getEntityIdsByArrayIndex: function (chosenItems, items, index) {
         const itemIds = [];
         chosenItems.forEach((chosenItem) => {
@@ -925,6 +918,13 @@ window.twSDK = {
             'coords'
         );
     },
+    getGameFeatures: function () {
+        const { Premium, FarmAssistent, AccountManager } = game_data.features;
+        const isPA = Premium.active;
+        const isLA = FarmAssistent.active;
+        const isAM = AccountManager.active;
+        return { isPA, isLA, isAM };
+    },
     getKeyByValue: function (object, value) {
         return Object.keys(object).find((key) => object[key] === value);
     },
@@ -951,6 +951,77 @@ window.twSDK = {
         const serverTimeFormatted =
             year + '-' + month + '-' + day + ' ' + serverTime;
         return new Date(serverTimeFormatted);
+    },
+    getTimeFromString: function (timeLand) {
+        let dateLand = '';
+        let serverDate = document
+            .getElementById('serverDate')
+            .innerText.split('/');
+
+        let TIME_PATTERNS = {
+            today: 'today at %s',
+            tomorrow: 'tomorrow at %s',
+            later: 'on %1 at %2',
+        };
+
+        if (window.lang) {
+            TIME_PATTERNS = {
+                today: window.lang['aea2b0aa9ae1534226518faaefffdaad'],
+                tomorrow: window.lang['57d28d1b211fddbb7a499ead5bf23079'],
+                later: window.lang['0cb274c906d622fa8ce524bcfbb7552d'],
+            };
+        }
+
+        let todayPattern = new RegExp(
+            TIME_PATTERNS.today.replace('%s', '([\\d+|:]+)')
+        ).exec(timeLand);
+        let tomorrowPattern = new RegExp(
+            TIME_PATTERNS.tomorrow.replace('%s', '([\\d+|:]+)')
+        ).exec(timeLand);
+        let laterDatePattern = new RegExp(
+            TIME_PATTERNS.later
+                .replace('%1', '([\\d+|\\.]+)')
+                .replace('%2', '([\\d+|:]+)')
+        ).exec(timeLand);
+
+        if (todayPattern !== null) {
+            // today
+            dateLand =
+                serverDate[0] +
+                '/' +
+                serverDate[1] +
+                '/' +
+                serverDate[2] +
+                ' ' +
+                timeLand.match(/\d+:\d+:\d+:\d+/)[0];
+        } else if (tomorrowPattern !== null) {
+            // tomorrow
+            let tomorrowDate = new Date(
+                serverDate[1] + '/' + serverDate[0] + '/' + serverDate[2]
+            );
+            tomorrowDate.setDate(tomorrowDate.getDate() + 1);
+            dateLand =
+                ('0' + tomorrowDate.getDate()).slice(-2) +
+                '/' +
+                ('0' + (tomorrowDate.getMonth() + 1)).slice(-2) +
+                '/' +
+                tomorrowDate.getFullYear() +
+                ' ' +
+                timeLand.match(/\d+:\d+:\d+:\d+/)[0];
+        } else {
+            // on
+            let on = timeLand.match(/\d+.\d+/)[0].split('.');
+            dateLand =
+                on[0] +
+                '/' +
+                on[1] +
+                '/' +
+                serverDate[2] +
+                ' ' +
+                timeLand.match(/\d+:\d+:\d+:\d+/)[0];
+        }
+
+        return dateLand;
     },
     getTribeMembersById: function (tribeIds, players) {
         const tribeMemberIds = [];
