@@ -1,7 +1,7 @@
 /*
     NAME: Tribal Wars Scripts Library
-    VERSION: 0.9.3 (beta version)
-    LAST UPDATED AT: 2023-09-21
+    VERSION: 0.9.4 (beta version)
+    LAST UPDATED AT: 2023-09-28
     AUTHOR: RedAlert (redalert_tw)
     AUTHOR URL: https://twscripts.dev/
     CONTRIBUTORS: Shinko to Kuma; Sass
@@ -278,6 +278,36 @@ window.twSDK = {
                 .custom-close-button { display: none; }
             }
         `;
+    },
+    arraysIntersection: function () {
+        var result = [];
+        var lists;
+
+        if (arguments.length === 1) {
+            lists = arguments[0];
+        } else {
+            lists = arguments;
+        }
+
+        for (var i = 0; i < lists.length; i++) {
+            var currentList = lists[i];
+            for (var y = 0; y < currentList.length; y++) {
+                var currentValue = currentList[y];
+                if (result.indexOf(currentValue) === -1) {
+                    var existsInAll = true;
+                    for (var x = 0; x < lists.length; x++) {
+                        if (lists[x].indexOf(currentValue) === -1) {
+                            existsInAll = false;
+                            break;
+                        }
+                    }
+                    if (existsInAll) {
+                        result.push(currentValue);
+                    }
+                }
+            }
+        }
+        return result;
     },
     buildUnitsPicker: function (
         selectedUnits,
@@ -936,6 +966,45 @@ window.twSDK = {
             currentServerTime.getTime() + totalSeconds * 1000
         );
         return arrivalDateTime;
+    },
+    getPagesToFetch: function () {
+        let list_pages = [];
+
+        const currentPage = twSDK.getParameterByName('page');
+        if (currentPage == '-1') return [];
+
+        if (
+            document
+                .getElementsByClassName('vis')[1]
+                .getElementsByTagName('select').length > 0
+        ) {
+            Array.from(
+                document
+                    .getElementsByClassName('vis')[1]
+                    .getElementsByTagName('select')[0]
+            ).forEach(function (item) {
+                list_pages.push(item.value);
+            });
+            list_pages.pop();
+        } else if (
+            document.getElementsByClassName('paged-nav-item').length > 0
+        ) {
+            let nr = 0;
+            Array.from(
+                document.getElementsByClassName('paged-nav-item')
+            ).forEach(function (item) {
+                let current = item.href;
+                current = current.split('page=')[0] + 'page=' + nr;
+                nr++;
+                list_pages.push(current);
+            });
+        } else {
+            let current_link = window.location.href;
+            list_pages.push(current_link);
+        }
+        list_pages.shift();
+
+        return list_pages;
     },
     getParameterByName: function (name, url = window.location.href) {
         return new URL(url).searchParams.get(name);
