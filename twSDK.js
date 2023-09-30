@@ -1,6 +1,6 @@
 /*
     NAME: Tribal Wars Scripts Library
-    VERSION: 0.9.5 (beta version)
+    VERSION: 0.9.6 (beta version)
     LAST UPDATED AT: 2023-09-30
     AUTHOR: RedAlert (redalert_tw)
     AUTHOR URL: https://twscripts.dev/
@@ -39,6 +39,8 @@ if (
         units: game_data.units,
         village: game_data.village,
         buildings: game_data.village.buildings,
+        sitterId:
+            game_data.player.sitter > 0 ? `&t=${game_data.player.id}` : '',
         coordsRegex: /\d{1,3}\|\d{1,3}/g,
         dateTimeMatch:
             /(?:[A-Z][a-z]{2}\s+\d{1,2},\s*\d{0,4}\s+|today\s+at\s+|tomorrow\s+at\s+)\d{1,2}:\d{2}:\d{2}:?\.?\d{0,3}/,
