@@ -1,7 +1,7 @@
 /*
     NAME: Tribal Wars Scripts Library
-    VERSION: 0.9.6 (beta version)
-    LAST UPDATED AT: 2023-09-30
+    VERSION: 0.9.8 (beta version)
+    LAST UPDATED AT: 2023-10-11
     AUTHOR: RedAlert (redalert_tw)
     AUTHOR URL: https://twscripts.dev/
     CONTRIBUTORS: Shinko to Kuma; Sass
@@ -19,7 +19,7 @@ const referralScriptUrl = currentScriptUrl.split('url=')[1];
 
 if (
     !referralScriptUrl ||
-    !referralScriptUrl.startsWith('https://twscripts.dev')
+    !referralScriptUrl.startsWith('https://twscripts.dev/')
 ) {
     UI.ErrorMessage('You have no authorization to use this script!');
 } else {
@@ -1635,6 +1635,7 @@ if (
                     const db = dbConnect.result;
                     const transaction = db.transaction(table, 'readwrite');
                     const store = transaction.objectStore(table);
+                    store.clear(); // clean store from items before adding new ones
 
                     data.forEach((item) => {
                         store.put(item);
