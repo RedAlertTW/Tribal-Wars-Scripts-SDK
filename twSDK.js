@@ -1,7 +1,7 @@
 /*
     NAME: Tribal Wars Scripts Library
-    VERSION: 1.0.0 (beta version)
-    LAST UPDATED AT: 2023-10-25
+    VERSION: 1.0.1 (beta version)
+    LAST UPDATED AT: 2023-11-09
     AUTHOR: RedAlert (redalert_tw)
     AUTHOR URL: https://twscripts.dev/
     CONTRIBUTORS: Shinko to Kuma; Sass
@@ -34,7 +34,6 @@ window.twSDK = {
     delayBetweenRequests: 200,
     // helper variables
     market: game_data.market,
-    masterAuthCheckEnable: false,
     units: game_data.units,
     village: game_data.village,
     buildings: game_data.village.buildings,
@@ -193,36 +192,39 @@ window.twSDK = {
     _debug: function () {
         return twSDK.getParameterByName('debug') === 'true' ? true : false;
     },
-    _logScript: function () {
-        jQuery.ajax({
-            url: 'https://twscripts.dev/logs/',
-            method: 'POST',
-            data: {
-                scriptData: scriptConfig.scriptData,
-                world: game_data.world,
-                market: game_data.market,
-                referralScript: scriptUrl.split('?&_=')[0],
-            },
-            dataType: 'JSON',
-            success: function ({ message }) {
-                UI.ErrorMessage(message);
-            },
-        });
-    },
-    _registerScript: function () {
-        if (this.enableCountApi) {
-            const { prefix } = this.scriptData;
-            const scriptInfo = this.scriptInfo();
-            jQuery.getJSON(
-                `https://twscripts.dev/count/?script=${prefix}`,
-                ({ count }) => {
-                    console.debug(
-                        `${scriptInfo} This script has been run ${this.formatAsNumber(
-                            parseInt(count)
-                        )} times.`
-                    );
-                }
-            );
+    _registerScript: function (callback) {
+        if (!isAllowedSource) {
+            jQuery.ajax({
+                url: 'https://twscripts.dev/logs/',
+                method: 'POST',
+                data: {
+                    scriptData: scriptConfig.scriptData,
+                    world: game_data.world,
+                    market: game_data.market,
+                    referralScript: scriptUrl.split('?&_=')[0],
+                },
+                dataType: 'JSON',
+                success: function ({ message }) {
+                    UI.ErrorMessage(message);
+                },
+            });
+        } else {
+            if (this.enableCountApi) {
+                const { prefix } = this.scriptData;
+                const scriptInfo = this.scriptInfo();
+                jQuery.getJSON(
+                    `https://twscripts.dev/count/?script=${prefix}`,
+                    ({ count }) => {
+                        console.debug(
+                            `${scriptInfo} This script has been run ${this.formatAsNumber(
+                                parseInt(count)
+                            )} times.`
+                        );
+                    }
+                );
+            }
+
+            callback();
         }
     },
 
@@ -1725,18 +1727,16 @@ window.twSDK = {
 
     // initialize library
     init: async function (scriptConfig) {
-        const {
-            scriptData,
-            translations,
-            allowedMarkets,
-            allowedScreens,
-            allowedModes,
-            enableCountApi,
-        } = scriptConfig;
+        twSDK._registerScript(() => {
+            const {
+                scriptData,
+                translations,
+                allowedMarkets,
+                allowedScreens,
+                allowedModes,
+                enableCountApi,
+            } = scriptConfig;
 
-        if (!isAllowedSource) {
-            this._logScript();
-        } else {
             this.scriptData = scriptData;
             this.translations = translations;
             this.allowedMarkets = allowedMarkets;
@@ -1746,7 +1746,6 @@ window.twSDK = {
             this.enableCountApi = enableCountApi;
 
             twSDK._initDebug();
-            twSDK._registerScript();
-        }
+        });
     },
 };
