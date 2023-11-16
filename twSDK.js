@@ -1,7 +1,7 @@
 /*
     NAME: Tribal Wars Scripts Library
-    VERSION: 1.0.1 (beta version)
-    LAST UPDATED AT: 2023-11-09
+    VERSION: 1.0.2 (beta version)
+    LAST UPDATED AT: 2023-11-15
     AUTHOR: RedAlert (redalert_tw)
     AUTHOR URL: https://twscripts.dev/
     CONTRIBUTORS: Shinko to Kuma; Sass
@@ -1041,12 +1041,16 @@ window.twSDK = {
         return `/${urlParts[5]}/${urlParts[6]}/${urlParts[7]}`;
     },
     getServerDateTimeObject: function () {
+        const formattedTime = this.getServerDateTime();
+        return new Date(formattedTime);
+    },
+    getServerDateTime: function () {
         const serverTime = jQuery('#serverTime').text();
         const serverDate = jQuery('#serverDate').text();
         const [day, month, year] = serverDate.split('/');
         const serverTimeFormatted =
             year + '-' + month + '-' + day + ' ' + serverTime;
-        return new Date(serverTimeFormatted);
+        return serverTimeFormatted;
     },
     getTimeFromString: function (timeLand) {
         let dateLand = '';
