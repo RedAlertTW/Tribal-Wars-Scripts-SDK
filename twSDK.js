@@ -1,7 +1,7 @@
 /*
     NAME: Tribal Wars Scripts Library
-    VERSION: 1.0.3 (beta version)
-    LAST UPDATED AT: 2023-11-17
+    VERSION: 1.0.4 (beta version)
+    LAST UPDATED AT: 2023-11-26
     AUTHOR: RedAlert (redalert_tw)
     AUTHOR URL: https://twscripts.dev/
     CONTRIBUTORS: Shinko to Kuma; Sass
@@ -29,6 +29,7 @@ window.twSDK = {
     allowedMarkets: [],
     allowedScreens: [],
     allowedModes: [],
+    isMobile: jQuery('#mobileHeader').length > 0,
     isDebug: false,
     enableCountApi: false,
     delayBetweenRequests: 200,
@@ -211,7 +212,7 @@ window.twSDK = {
         } else {
             if (scriptConfig.enableCountApi) {
                 const { prefix } = scriptConfig.scriptData;
-                const scriptInfo = this.scriptInfo();
+                const scriptInfo = this.scriptInfo(scriptConfig.scriptData);
                 jQuery.getJSON(
                     `https://twscripts.dev/count/?script=${prefix}`,
                     ({ count }) => {
@@ -1390,8 +1391,8 @@ window.twSDK = {
             jQuery(`.${mainClass}-body`).html(body);
         }
     },
-    scriptInfo: function () {
-        return `[${this.scriptData.name} ${this.scriptData.version}]`;
+    scriptInfo: function (scriptData = this.scriptData) {
+        return `[${scriptData.name} ${scriptData.version}]`;
     },
     secondsToHms: function (timestamp) {
         const hours = Math.floor(timestamp / 60 / 60);
@@ -1412,7 +1413,7 @@ window.twSDK = {
         return array.sort((a, b) => b[key] - a[key]);
     },
     startProgressBar: function (total) {
-        const width = jQuery('#contentContainer')[0].clientWidth;
+        const width = jQuery('#content_value')[0].clientWidth;
         const preloaderContent = `
             <div id="progressbar" class="progress-bar" style="margin-bottom:12px;">
                 <span class="count label">0/${total}</span>
@@ -1423,7 +1424,12 @@ window.twSDK = {
                 </div>
             </div>
         `;
-        jQuery('#contentContainer').eq(0).prepend(preloaderContent);
+
+        if (this.isMobile) {
+            jQuery('#content_value').eq(0).prepend(preloaderContent);
+        } else {
+            jQuery('#contentContainer').eq(0).prepend(preloaderContent);
+        }
     },
     sumOfArrayItemValues: function (array) {
         return array.reduce((a, b) => a + b, 0);
