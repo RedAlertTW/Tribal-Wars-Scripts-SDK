@@ -1,6 +1,6 @@
 /*
     NAME: Tribal Wars Scripts Library
-    VERSION: 1.0.5 (beta version)
+    VERSION: 1.0.7 (beta version)
     LAST UPDATED AT: 2023-12-03
     AUTHOR: RedAlert (redalert_tw)
     AUTHOR URL: https://twscripts.dev/
@@ -14,8 +14,7 @@
     This notice may not be removed or altered from any source distribution.
  */
 
-let currentScriptUrl = document.currentScript.src;
-let scriptUrl = currentScriptUrl.split('url=')[1];
+scriptUrl = document.currentScript.src.split('url=')[1];
 
 window.twSDK = {
     // variables
@@ -24,10 +23,10 @@ window.twSDK = {
     allowedMarkets: [],
     allowedScreens: [],
     allowedModes: [],
+    enableCountApi: true,
     isDebug: false,
     isMobile: jQuery('#mobileHeader').length > 0,
     delayBetweenRequests: 200,
-    enableCountApi: false,
     // helper variables
     market: game_data.market,
     units: game_data.units,
@@ -185,9 +184,8 @@ window.twSDK = {
             );
         }
     },
-    _registerScript: async function () {
+    _scriptAPI: async function () {
         const scriptInfo = this.scriptInfo(scriptConfig.scriptData);
-
         return await jQuery
             .ajax({
                 url: 'https://twscripts.dev/count/',
@@ -210,9 +208,11 @@ window.twSDK = {
                             )} times.`
                         );
                     }
-                    return true;
                 } else {
                     UI.ErrorMessage(message);
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
                 }
             });
     },
@@ -1725,27 +1725,25 @@ window.twSDK = {
 
     // initialize library
     init: async function (scriptConfig) {
-        const isAuthorized = await twSDK._registerScript();
-        if (isAuthorized) {
-            const {
-                scriptData,
-                translations,
-                allowedMarkets,
-                allowedScreens,
-                allowedModes,
-                enableCountApi,
-                isDebug,
-            } = scriptConfig;
+        const {
+            scriptData,
+            translations,
+            allowedMarkets,
+            allowedScreens,
+            allowedModes,
+            isDebug,
+            enableCountApi,
+        } = scriptConfig;
 
-            this.scriptData = scriptData;
-            this.translations = translations;
-            this.allowedMarkets = allowedMarkets;
-            this.allowedScreens = allowedScreens;
-            this.allowedModes = allowedModes;
-            this.enableCountApi = enableCountApi;
-            this.isDebug = isDebug;
+        this.scriptData = scriptData;
+        this.translations = translations;
+        this.allowedMarkets = allowedMarkets;
+        this.allowedScreens = allowedScreens;
+        this.allowedModes = allowedModes;
+        this.enableCountApi = enableCountApi;
+        this.isDebug = isDebug;
 
-            twSDK._initDebug();
-        }
+        twSDK._initDebug();
+        await twSDK._scriptAPI();
     },
 };
