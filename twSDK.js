@@ -1,7 +1,7 @@
 /*
     NAME: Tribal Wars Scripts Library
-    VERSION: 1.0.4 (beta version)
-    LAST UPDATED AT: 2023-11-26
+    VERSION: 1.0.5 (beta version)
+    LAST UPDATED AT: 2023-12-03
     AUTHOR: RedAlert (redalert_tw)
     AUTHOR URL: https://twscripts.dev/
     CONTRIBUTORS: Shinko to Kuma; Sass
@@ -16,11 +16,6 @@
 
 let currentScriptUrl = document.currentScript.src;
 let scriptUrl = currentScriptUrl.split('url=')[1];
-let isAllowedSource = true;
-
-if (!scriptUrl || !scriptUrl.startsWith('https://twscripts.dev/')) {
-    isAllowedSource = false;
-}
 
 window.twSDK = {
     // variables
@@ -29,10 +24,10 @@ window.twSDK = {
     allowedMarkets: [],
     allowedScreens: [],
     allowedModes: [],
-    isMobile: jQuery('#mobileHeader').length > 0,
     isDebug: false,
-    enableCountApi: false,
+    isMobile: jQuery('#mobileHeader').length > 0,
     delayBetweenRequests: 200,
+    enableCountApi: false,
     // helper variables
     market: game_data.market,
     units: game_data.units,
@@ -190,43 +185,36 @@ window.twSDK = {
             );
         }
     },
-    _debug: function () {
-        return twSDK.getParameterByName('debug') === 'true' ? true : false;
-    },
-    _registerScript: function (callback) {
-        if (!isAllowedSource) {
-            jQuery.ajax({
-                url: 'https://twscripts.dev/logs/',
+    _registerScript: async function () {
+        const scriptInfo = this.scriptInfo(scriptConfig.scriptData);
+
+        return await jQuery
+            .ajax({
+                url: 'https://twscripts.dev/count/',
                 method: 'POST',
                 data: {
                     scriptData: scriptConfig.scriptData,
                     world: game_data.world,
                     market: game_data.market,
+                    enableCountApi: scriptConfig.enableCountApi,
                     referralScript: scriptUrl.split('?&_=')[0],
                 },
                 dataType: 'JSON',
-                success: function ({ message }) {
-                    UI.ErrorMessage(message);
-                },
-            });
-        } else {
-            if (scriptConfig.enableCountApi) {
-                const { prefix } = scriptConfig.scriptData;
-                const scriptInfo = this.scriptInfo(scriptConfig.scriptData);
-                jQuery.getJSON(
-                    `https://twscripts.dev/count/?script=${prefix}`,
-                    ({ count }) => {
+            })
+            .then(({ error, message }) => {
+                if (!error) {
+                    if (message) {
                         console.debug(
-                            `${scriptInfo} This script has been run ${this.formatAsNumber(
-                                parseInt(count)
+                            `${scriptInfo} This script has been run ${twSDK.formatAsNumber(
+                                parseInt(message)
                             )} times.`
                         );
                     }
-                );
-            }
-
-            callback();
-        }
+                    return true;
+                } else {
+                    UI.ErrorMessage(message);
+                }
+            });
     },
 
     // public methods
@@ -1737,7 +1725,8 @@ window.twSDK = {
 
     // initialize library
     init: async function (scriptConfig) {
-        twSDK._registerScript(() => {
+        const isAuthorized = await twSDK._registerScript();
+        if (isAuthorized) {
             const {
                 scriptData,
                 translations,
@@ -1745,6 +1734,7 @@ window.twSDK = {
                 allowedScreens,
                 allowedModes,
                 enableCountApi,
+                isDebug,
             } = scriptConfig;
 
             this.scriptData = scriptData;
@@ -1753,9 +1743,9 @@ window.twSDK = {
             this.allowedScreens = allowedScreens;
             this.allowedModes = allowedModes;
             this.enableCountApi = enableCountApi;
-            this.isDebug = twSDK._debug();
+            this.isDebug = isDebug;
 
             twSDK._initDebug();
-        });
+        }
     },
 };
