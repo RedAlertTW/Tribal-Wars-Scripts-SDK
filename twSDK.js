@@ -1,7 +1,7 @@
 /*
     NAME: Tribal Wars Scripts Library
-    VERSION: 1.0.7 (beta version)
-    LAST UPDATED AT: 2023-12-03
+    VERSION: 1.0.8 (beta version)
+    LAST UPDATED AT: 2023-12-13
     AUTHOR: RedAlert (redalert_tw)
     AUTHOR URL: https://twscripts.dev/
     CONTRIBUTORS: Shinko to Kuma; Sass
@@ -1111,6 +1111,14 @@ window.twSDK = {
         }
 
         return dateLand;
+    },
+    getTravelTimeInSecond: function (distance, unitSpeed) {
+        let travelTime = distance * unitSpeed * 60;
+        if (travelTime % 1 > 0.5) {
+            return (travelTime += 1);
+        } else {
+            return travelTime;
+        }
     },
     getTribeMembersById: function (tribeIds, players) {
         const tribeMemberIds = [];
