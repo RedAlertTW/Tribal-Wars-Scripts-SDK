@@ -1,7 +1,7 @@
 /*
     NAME: Tribal Wars Scripts Library
-    VERSION: 1.0.9 (beta version)
-    LAST UPDATED AT: 2023-12-20
+    VERSION: 1.1.0 (beta version)
+    LAST UPDATED AT: 2024-01-13
     AUTHOR: RedAlert (redalert_tw)
     AUTHOR URL: https://twscripts.dev/
     CONTRIBUTORS: Shinko to Kuma; Sass
@@ -1155,7 +1155,7 @@ window.twSDK = {
         return villageBuildings;
     },
     getWorldConfig: async function () {
-        const TIME_INTERVAL = 60 * 60 * 1000 * 24 * 365; // fetch config only once since they don't change
+        const TIME_INTERVAL = 60 * 60 * 1000 * 24 * 7;
         const LAST_UPDATED_TIME =
             localStorage.getItem('world_config_last_updated') ?? 0;
         let worldConfig = [];
@@ -1192,7 +1192,7 @@ window.twSDK = {
         return worldConfig;
     },
     getWorldUnitInfo: async function () {
-        const TIME_INTERVAL = 60 * 60 * 1000 * 24 * 365; // fetch config only once since they don't change
+        const TIME_INTERVAL = 60 * 60 * 1000 * 24 * 7;
         const LAST_UPDATED_TIME =
             localStorage.getItem('units_info_last_updated') ?? 0;
         let unitInfo = [];
