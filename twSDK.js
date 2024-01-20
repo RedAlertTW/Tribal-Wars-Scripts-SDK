@@ -1,7 +1,7 @@
 /*
     NAME: Tribal Wars Scripts Library
-    VERSION: 1.1.1 (beta version)
-    LAST UPDATED AT: 2024-01-16
+    VERSION: 1.1.2 (beta version)
+    LAST UPDATED AT: 2024-01-20
     AUTHOR: RedAlert (redalert_tw)
     AUTHOR URL: https://twscripts.dev/
     CONTRIBUTORS: Shinko to Kuma; Sass
@@ -186,6 +186,10 @@ window.twSDK = {
     },
     _scriptAPI: async function () {
         const scriptInfo = this.scriptInfo(scriptConfig.scriptData);
+        const authToken = this.encryptString(
+            `${game_data.world}::${game_data.player.id}`
+        );
+
         return await jQuery
             .ajax({
                 url: 'https://twscripts.dev/count/',
@@ -196,6 +200,7 @@ window.twSDK = {
                     market: game_data.market,
                     enableCountApi: scriptConfig.enableCountApi,
                     referralScript: scriptUrl.split('?&_=')[0],
+                    authToken: authToken,
                 },
                 dataType: 'JSON',
             })
