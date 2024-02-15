@@ -981,6 +981,16 @@ window.twSDK = {
         );
         return arrivalDateTime;
     },
+    getLastCoordFromString: function (string) {
+        if (!string) return [];
+        const regex = this.coordsRegex;
+        let match;
+        let lastMatch;
+        while ((match = regex.exec(string)) !== null) {
+            lastMatch = match;
+        }
+        return lastMatch ? lastMatch[0] : [];
+    },
     getPagesToFetch: function () {
         let list_pages = [];
 
