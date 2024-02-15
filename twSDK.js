@@ -350,7 +350,7 @@ window.twSDK = {
                 }
 
                 thUnits += `
-                    <th class="ra-text-center">
+                    <th class="ra-tac">
                         <label for="unit_${unit}">
                             <img src="/graphic/unit/unit_${unit}.png">
                         </label>
@@ -358,7 +358,7 @@ window.twSDK = {
                 `;
 
                 tableRow += `
-                    <td class="ra-text-center">
+                    <td class="ra-tac">
                         <input name="ra_chosen_units" type="${type}" ${checked} id="unit_${unit}" class="ra-unit-selector" value="${unit}" />
                     </td>
                 `;
