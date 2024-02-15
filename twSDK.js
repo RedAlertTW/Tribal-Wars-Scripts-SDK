@@ -382,6 +382,58 @@ window.twSDK = {
 
         return unitsTable;
     },
+    buildUnitSelector: function (
+        unitsToIgnore,
+        idPrefix,
+        type = 'checkbox'
+    ) {
+        let unitsTable = ``;
+
+        let thUnits = ``;
+        let tableRow = ``;
+
+        let value = ``;
+
+        game_data.units.forEach((unit) => {
+            if (!unitsToIgnore.includes(unit)) {
+                if (type === 'number' || type === 'text') {
+                    value = '0';
+                } else {
+                    value = unit;
+                }
+                thUnits += `
+                    <th class="ra-tac">
+                        <label for="${idPrefix}_unit_${unit}">
+                            <img src="/graphic/unit/unit_${unit}.png" alt="${unit}">
+                        </label>
+                    </th>
+                `;
+
+                tableRow += `
+                    <td class="ra-tac">
+                        <input name="${idPrefix}_chosen_units" type="${type}" id="${idPrefix}_unit_${unit}" data-unit="${unit}" class="${idPrefix}-unit-selector" value="${value}" />
+                    </td>
+                `;
+            }
+        });
+
+        unitsTable = `
+            <table class="ra-table ra-table-v2" width="100%" id="${idPrefix}_unit_selector">
+                <thead>
+                    <tr>
+                        ${thUnits}
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        ${tableRow}
+                    </tr>
+                </tbody>
+            </table>
+        `;
+
+        return unitsTable;
+    },
     calculateCoinsNeededForNthNoble: function (noble) {
         return (noble * noble + noble) / 2;
     },
