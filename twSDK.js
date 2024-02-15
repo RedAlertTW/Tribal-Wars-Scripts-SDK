@@ -4,7 +4,7 @@
     LAST UPDATED AT: 2024-01-31
     AUTHOR: RedAlert (redalert_tw)
     AUTHOR URL: https://twscripts.dev/
-    CONTRIBUTORS: Shinko to Kuma; Sass
+    CONTRIBUTORS: Shinko to Kuma; Sass, SaveBankDev
     HELP: https://github.com/RedAlertTW/Tribal-Wars-Scripts-SDK
     STATUS: Work in progress. Not finished 100%.
 
