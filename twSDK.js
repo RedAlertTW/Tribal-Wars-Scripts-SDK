@@ -332,6 +332,36 @@ window.twSDK = {
         }
         return result;
     },
+    buildDropDown: function (array, entity, prefixId = 'ra') {
+        let sortedArray;
+        if (entity === 'Tribes') {
+            sortedArray = array.sort((a, b) => a[7] - b[7]);
+        } else if (entity === 'Players') {
+            sortedArray = array.sort((a, b) => a[5] - b[5]);
+        } else {
+            sortedArray = array;
+        }
+        let dropdown = `<input type="email" class="${prefixId}-input" multiple list="${prefixId}_select_${entity}" placeholder="${this.tt(
+            'Start typing and suggestions will show ...'
+        )}" id="${prefixId}_${entity}"><datalist id="${prefixId}_select_${entity}">`;
+        sortedArray.forEach((item) => {
+            if (item.length > 0 && item[0].length !== 0) {
+                if (entity === 'Tribes') {
+                    const [id, _, tag] = item;
+                    const cleanTribeTag = this.cleanString(tag);
+                    dropdown += `<option value="${cleanTribeTag}">`;
+                } else if (entity === 'Players') {
+                    const [id, name] = item;
+                    const cleanPlayerName = this.cleanString(name);
+                    dropdown += `<option value="${cleanPlayerName}">`;
+                } else {
+                    dropdown += `<option value="${item}">`;
+                }
+            }
+        });
+        dropdown += '</datalist>';
+        return dropdown;
+    },
     buildUnitsPicker: function (
         selectedUnits = [],
         unitsToIgnore,
