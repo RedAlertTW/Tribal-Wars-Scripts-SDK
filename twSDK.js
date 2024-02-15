@@ -333,7 +333,7 @@ window.twSDK = {
         return result;
     },
     buildUnitsPicker: function (
-        selectedUnits,
+        selectedUnits = [],
         unitsToIgnore,
         type = 'checkbox'
     ) {
