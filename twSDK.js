@@ -341,9 +341,9 @@ window.twSDK = {
         } else {
             sortedArray = array;
         }
-        let dropdown = `<input type="email" class="${prefixId}-input" multiple list="${prefixId}_select_${entity}" placeholder="${this.tt(
+        let dropdown = `<input type="email" class="${prefixId}-input" multiple list="${prefixId}Select${entity}" placeholder="${this.tt(
             'Start typing and suggestions will show ...'
-        )}" id="${prefixId}_${entity}"><datalist id="${prefixId}_select_${entity}">`;
+        )}" id="${prefixId}${entity}"><datalist id="${prefixId}Select${entity}">`;
         sortedArray.forEach((item) => {
             if (item.length > 0 && item[0].length !== 0) {
                 if (entity === 'Tribes') {
