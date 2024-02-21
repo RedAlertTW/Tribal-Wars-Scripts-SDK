@@ -27,6 +27,7 @@ window.twSDK = {
     isDebug: false,
     isMobile: jQuery('#mobileHeader').length > 0,
     delayBetweenRequests: 200,
+    idCounter: 0,
     // helper variables
     market: game_data.market,
     units: game_data.units,
@@ -332,7 +333,9 @@ window.twSDK = {
         }
         return result;
     },
-    buildDropDown: function (array, entity, prefixId = 'ra') {
+    buildDropDown: function (array, entity) {
+        let prefixId = this.scriptData.prefix + this.idCounter;
+        this.idCounter++;
         let sortedArray;
         if (entity === 'Tribes') {
             sortedArray = array.sort((a, b) => a[7] - b[7]);
