@@ -363,7 +363,8 @@ window.twSDK = {
             }
         });
         dropdown += '</datalist>';
-        return dropdown;
+
+        return { dropdown, prefixId };
     },
     buildUnitsPicker: function (
         selectedUnits = [],
