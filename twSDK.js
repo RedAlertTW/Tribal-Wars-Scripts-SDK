@@ -1,7 +1,7 @@
 /*
     NAME: Tribal Wars Scripts Library
-    VERSION: 1.1.5 (beta version)
-    LAST UPDATED AT: 2024-02-15
+    VERSION: 1.1.6 (beta version)
+    LAST UPDATED AT: 2024-03-24
     AUTHOR: RedAlert (redalert_tw)
     AUTHOR URL: https://twscripts.dev/
     CONTRIBUTORS: Shinko to Kuma; Sass, SaveBankDev
@@ -1497,7 +1497,7 @@ window.twSDK = {
         );
 
         // check if entity is allowed and can be fetched
-        const allowedEntities = ['village', 'player', 'ally','conquer'];
+        const allowedEntities = ['village', 'player', 'ally', 'conquer'];
         if (!allowedEntities.includes(entity)) {
             throw new Error(`Entity ${entity} does not exist!`);
         }
@@ -1529,9 +1529,7 @@ window.twSDK = {
                 dbTable: 'conquer',
                 key: '',
                 url: twSDK.worldDataConquests,
-            }
-
-            
+            },
         };
 
         // Helpers: Fetch entity data and save to localStorage
@@ -1652,14 +1650,14 @@ window.twSDK = {
 
             dbConnect.onupgradeneeded = function () {
                 const db = dbConnect.result;
-                if(keyId.length){
-                db.createObjectStore(table, {
-                    keyPath: keyId,
-                });
+                if (keyId.length) {
+                    db.createObjectStore(table, {
+                        keyPath: keyId,
+                    });
                 } else {
                     db.createObjectStore(table, {
-                    autoIncrement: true,
-                });
+                        autoIncrement: true,
+                    });
                 }
             };
 
