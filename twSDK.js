@@ -42,6 +42,7 @@ window.twSDK = {
     worldDataVillages: '/map/village.txt',
     worldDataPlayers: '/map/player.txt',
     worldDataTribes: '/map/ally.txt',
+    worldDataConquests: '/map/conquer_extended.txt',
     // game constants
     // https://help.tribalwars.net/wiki/Points
     buildingPoints: {
@@ -1496,7 +1497,7 @@ window.twSDK = {
         );
 
         // check if entity is allowed and can be fetched
-        const allowedEntities = ['village', 'player', 'ally'];
+        const allowedEntities = ['village', 'player', 'ally','conquer'];
         if (!allowedEntities.includes(entity)) {
             throw new Error(`Entity ${entity} does not exist!`);
         }
@@ -1523,6 +1524,14 @@ window.twSDK = {
                 key: 'tribeId',
                 url: twSDK.worldDataTribes,
             },
+            conquer: {
+                dbName: 'conquerDb',
+                dbTable: 'conquer',
+                key: '',
+                url: twSDK.worldDataConquests,
+            }
+
+            
         };
 
         // Helpers: Fetch entity data and save to localStorage
@@ -1594,6 +1603,25 @@ window.twSDK = {
                                 };
                             });
                         break;
+                    case 'conquer':
+                        responseData = data
+                            .filter((item) => {
+                                if (item[0] != '') {
+                                    return item;
+                                }
+                            })
+                            .map((item) => {
+                                return {
+                                    villageId: parseInt(item[0]),
+                                    unixTimestamp: parseInt(item[1]),
+                                    newPlayerId: parseInt(item[2]),
+                                    newPlayerId: parseInt(item[3]),
+                                    oldTribeId: parseInt(item[4]),
+                                    newTribeId: parseInt(item[5]),
+                                    villagePoints: parseInt(item[6]),
+                                };
+                            });
+                        break;
                     default:
                         return [];
                 }
@@ -1624,9 +1652,15 @@ window.twSDK = {
 
             dbConnect.onupgradeneeded = function () {
                 const db = dbConnect.result;
+                if(keyId.length){
                 db.createObjectStore(table, {
                     keyPath: keyId,
                 });
+                } else {
+                    db.createObjectStore(table, {
+                    autoIncrement: true,
+                });
+                }
             };
 
             dbConnect.onsuccess = function () {
@@ -1703,6 +1737,16 @@ window.twSDK = {
                         item.points,
                         item.allPoints,
                         item.rank,
+                    ]);
+                case 'conquer':
+                    return arrayOfObjects.map((item) => [
+                        item.villageId,
+                        item.unixTimestamp,
+                        item.newPlayerId,
+                        item.newPlayerId,
+                        item.oldTribeId,
+                        item.newTribeId,
+                        item.villagePoints,
                     ]);
                 default:
                     return [];
