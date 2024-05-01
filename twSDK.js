@@ -10,7 +10,7 @@
 
     This software is provided 'as-is', without any express or implied warranty.
     In no event will the author/s be held liable for any damages arising from the use of this software.
-    It is not allowed to clone, rehost, re-distribute and all other forms of copying this code without permission from the author/s.
+    It is allowed to clone, rehost, re-distribute and all other forms of copying this code without permission from the author/s, for as long as it is not used on commercial products.
     This notice may not be removed or altered from any source distribution.
  */
 
