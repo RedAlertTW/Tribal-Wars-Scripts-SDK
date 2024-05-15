@@ -1385,7 +1385,7 @@ window.twSDK = {
                 jQuery('#content_value').prepend(content);
             } else {
                 jQuery('#contentContainer').prepend(content);
-                jQuery(`#${id}`).draggable({ cancel: '.ra-table' });
+                jQuery(`#${id}`).draggable({ cancel: '.ra-table,input,textarea,button,select,option' });
 
                 jQuery(`#${id} .custom-close-button`).on('click', function (e) {
                     e.preventDefault();
