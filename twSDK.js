@@ -185,11 +185,11 @@ window.twSDK = {
             );
         }
     },
-    _scriptAPI: async function () {
+    _countAPI: function () {
         const scriptInfo = this.scriptInfo(scriptConfig.scriptData);
 
         if (scriptConfig.enableCountApi) {
-            await jQuery
+            jQuery
                 .ajax({
                     url: 'https://twscripts.dev/count/',
                     method: 'POST',
@@ -201,7 +201,7 @@ window.twSDK = {
                     },
                     dataType: 'JSON',
                 })
-                .then(({ error, message }) => {
+                .then(({ message }) => {
                     if (message) {
                         console.debug(
                             `${scriptInfo} This script has been run ${twSDK.formatAsNumber(
@@ -1752,6 +1752,6 @@ window.twSDK = {
         this.isDebug = isDebug;
 
         twSDK._initDebug();
-        twSDK._scriptAPI();
+        twSDK._countAPI();
     },
 };
