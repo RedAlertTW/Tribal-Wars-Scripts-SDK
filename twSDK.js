@@ -1,7 +1,7 @@
 /*
     NAME: Tribal Wars Scripts Library
-    VERSION: 1.1.8 (beta version)
-    LAST UPDATED AT: 2024-05-15
+    VERSION: 1.2.0 (beta version)
+    LAST UPDATED AT: 2024-05-26
     AUTHOR: RedAlert (redalert_tw)
     AUTHOR URL: https://twscripts.dev/
     CONTRIBUTORS: Shinko to Kuma; Sass, SaveBankDev, DSsecundum, suilenroc
@@ -187,26 +187,21 @@ window.twSDK = {
     },
     _scriptAPI: async function () {
         const scriptInfo = this.scriptInfo(scriptConfig.scriptData);
-        const authToken = this.encryptString(
-            `${game_data.world}::${game_data.player.id}`
-        );
 
-        return await jQuery
-            .ajax({
-                url: 'https://twscripts.dev/count/',
-                method: 'POST',
-                data: {
-                    scriptData: scriptConfig.scriptData,
-                    world: game_data.world,
-                    market: game_data.market,
-                    enableCountApi: scriptConfig.enableCountApi,
-                    referralScript: scriptUrl.split('?&_=')[0],
-                    authToken: authToken,
-                },
-                dataType: 'JSON',
-            })
-            .then(({ error, message }) => {
-                if (!error) {
+        if (scriptConfig.enableCountApi) {
+            await jQuery
+                .ajax({
+                    url: 'https://twscripts.dev/count/',
+                    method: 'POST',
+                    data: {
+                        scriptData: scriptConfig.scriptData,
+                        world: game_data.world,
+                        market: game_data.market,
+                        referralScript: scriptUrl.split('?&_=')[0],
+                    },
+                    dataType: 'JSON',
+                })
+                .then(({ error, message }) => {
                     if (message) {
                         console.debug(
                             `${scriptInfo} This script has been run ${twSDK.formatAsNumber(
@@ -214,13 +209,8 @@ window.twSDK = {
                             )} times.`
                         );
                     }
-                } else {
-                    UI.ErrorMessage(message);
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 1000);
-                }
-            });
+                });
+        }
     },
 
     // public methods
@@ -496,48 +486,6 @@ window.twSDK = {
             arrData[arrData.length - 1].push(strMatchedValue);
         }
         return arrData;
-    },
-    decryptString: function (str) {
-        const alphabet =
-            'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 !"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
-        let decryptedStr = '';
-
-        for (let i = 0; i < str.length; i++) {
-            const char = str[i];
-            const index = alphabet.indexOf(char);
-
-            if (index === -1) {
-                // Character is not in the alphabet, leave it as-is
-                decryptedStr += char;
-            } else {
-                // Substitue the character with its corresponding shifted character
-                const shiftedIndex = (index - 3 + 94) % 94;
-                decryptedStr += alphabet[shiftedIndex];
-            }
-        }
-
-        return decryptedStr;
-    },
-    encryptString: function (str) {
-        const alphabet =
-            'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789 !"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~';
-        let encryptedStr = '';
-
-        for (let i = 0; i < str.length; i++) {
-            const char = str[i];
-            const index = alphabet.indexOf(char);
-
-            if (index === -1) {
-                // Character is not in the alphabet, leave it as-is
-                encryptedStr += char;
-            } else {
-                // Substitue the character with its corresponding shifted character
-                const shiftedIndex = (index + 3) % 94;
-                encryptedStr += alphabet[shiftedIndex];
-            }
-        }
-
-        return encryptedStr;
     },
     filterVillagesByPlayerIds: function (playerIds, villages) {
         const playerVillages = [];
@@ -1804,6 +1752,6 @@ window.twSDK = {
         this.isDebug = isDebug;
 
         twSDK._initDebug();
-        await twSDK._scriptAPI();
+        twSDK._scriptAPI();
     },
 };
