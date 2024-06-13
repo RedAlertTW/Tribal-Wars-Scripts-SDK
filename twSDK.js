@@ -1,7 +1,7 @@
 /*
     NAME: Tribal Wars Scripts Library
-    VERSION: 1.2.1 (beta version)
-    LAST UPDATED AT: 2024-06-09
+    VERSION: 1.2.2 (beta version)
+    LAST UPDATED AT: 2024-06-13
     AUTHOR: RedAlert (redalert_tw)
     AUTHOR URL: https://twscripts.dev/
     CONTRIBUTORS: Shinko to Kuma; Sass, SaveBankDev, DSsecundum, suilenroc
@@ -542,6 +542,11 @@ window.twSDK = {
             return acc;
         }, {});
     },
+    generateRandomCoordinates: function () {
+        const x = Math.floor(Math.random() * 1000);
+        const y = Math.floor(Math.random() * 1000);
+        return `${x}|${y}`;
+    },
     getAll: function (
         urls, // array of URLs
         onLoad, // called when any URL is loaded, params (index, data)
@@ -648,6 +653,33 @@ window.twSDK = {
     getCoordFromString: function (string) {
         if (!string) return [];
         return string.match(this.coordsRegex)[0];
+    },
+    getContinentSectorField: function (coordinate) {
+        const continent = this.getContinentByCoord(coordinate);
+        let [coordX, coordY] = coordinate.split('|');
+
+        let tempX = Number(coordX);
+        let tempY = Number(coordY);
+
+        //==== sector ====
+        if (tempX >= 100) tempX = Number(String(coordX).substring(1));
+        if (tempY >= 100) tempY = Number(String(coordY).substring(1));
+
+        let xPos = Math.floor(tempX / 5);
+        let yPos = Math.floor(tempY / 5);
+        let sector = yPos * 20 + xPos;
+
+        //==== field ====
+        if (tempX >= 10) tempX = Number(String(tempX).substring(1));
+        if (tempY >= 10) tempY = Number(String(tempY).substring(1));
+
+        if (tempX >= 5) tempX = tempX - 5;
+        if (tempY >= 5) tempY = tempY - 5;
+        let field = tempY * 5 + tempX;
+
+        let name = continent + ':' + sector + ':' + field;
+
+        return name;
     },
     getDestinationCoordinates: function (config, tribes, players, villages) {
         const {
@@ -1405,6 +1437,11 @@ window.twSDK = {
     sumOfArrayItemValues: function (array) {
         return array.reduce((a, b) => a + b, 0);
     },
+    randomItemPicker: function (items, splitter = ' ') {
+        const itemsArray = items.split(splitter);
+        const chosenIndex = Math.floor(Math.random() * itemsArray.length);
+        return itemsArray[chosenIndex];
+    },
     timeAgo: function (seconds) {
         var interval = seconds / 31536000;
         if (interval > 1) return Math.floor(interval) + ' Y';
@@ -1430,6 +1467,9 @@ window.twSDK = {
             return this.translations['en_DK'][string];
         }
     },
+    toggleUploadButtonStatus: function (elementToToggle) {
+        jQuery(elementToToggle).attr('disabled', (i, v) => !v);
+    },
     updateProgress: function (elementToUpate, itemsLength, index) {
         jQuery(elementToUpate).text(`${index}/${itemsLength}`);
     },
@@ -1439,9 +1479,6 @@ window.twSDK = {
         if (index + 1 == total) {
             jQuery('#progressbar').fadeOut(1000);
         }
-    },
-    toggleUploadButtonStatus: function (elementToToggle) {
-        jQuery(elementToToggle).attr('disabled', (i, v) => !v);
     },
     xml2json: function ($xml) {
         let data = {};
