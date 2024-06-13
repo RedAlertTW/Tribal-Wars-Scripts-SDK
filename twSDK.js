@@ -1437,10 +1437,14 @@ window.twSDK = {
     sumOfArrayItemValues: function (array) {
         return array.reduce((a, b) => a + b, 0);
     },
-    randomItemPicker: function (items, splitter = ' ') {
+    randomItemPickerString: function (items, splitter = ' ') {
         const itemsArray = items.split(splitter);
         const chosenIndex = Math.floor(Math.random() * itemsArray.length);
         return itemsArray[chosenIndex];
+    },
+    randomItemPickerArray: function (items) {
+        const chosenIndex = Math.floor(Math.random() * items.length);
+        return items[chosenIndex];
     },
     timeAgo: function (seconds) {
         var interval = seconds / 31536000;
