@@ -1,7 +1,7 @@
 /*
     NAME: Tribal Wars Scripts Library
-    VERSION: 1.2.2 (beta version)
-    LAST UPDATED AT: 2024-06-13
+    VERSION: 1.2.3 (beta version)
+    LAST UPDATED AT: 2024-06-23
     AUTHOR: RedAlert (redalert_tw)
     AUTHOR URL: https://twscripts.dev/
     CONTRIBUTORS: Shinko to Kuma; Sass, SaveBankDev, DSsecundum, suilenroc
@@ -44,6 +44,27 @@ window.twSDK = {
     worldDataTribes: '/map/ally.txt',
     worldDataConquests: '/map/conquer_extended.txt',
     // game constants
+    buildingsList: [
+        'main',
+        'barracks',
+        'stable',
+        'garage',
+        'church',
+        'church_f',
+        'watchtower',
+        'snob',
+        'smith',
+        'place',
+        'statue',
+        'market',
+        'wood',
+        'stone',
+        'iron',
+        'farm',
+        'storage',
+        'hide',
+        'wall',
+    ],
     // https://help.tribalwars.net/wiki/Points
     buildingPoints: {
         main: [
@@ -502,6 +523,32 @@ window.twSDK = {
             arrData[arrData.length - 1].push(strMatchedValue);
         }
         return arrData;
+    },
+    decryptAccountManangerTemplate: function (exportedTemplate) {
+        const buildings = [];
+
+        const binaryString = atob(exportedTemplate);
+        const bytes = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
+        }
+
+        const payloadLength = bytes[0] + bytes[1] * 256;
+        if (payloadLength <= bytes.length - 2) {
+            const payload = bytes.slice(2, 2 + payloadLength);
+            for (let i = 0; i < payload.length; i += 2) {
+                const buildingId = payload[i];
+                const buildingLevel = payload[i + 1];
+                if (this.buildingsList[buildingId]) {
+                    buildings.push({
+                        id: this.buildingsList[buildingId],
+                        upgrade: `+${buildingLevel}`,
+                    });
+                }
+            }
+
+            return buildings;
+        }
     },
     filterVillagesByPlayerIds: function (playerIds, villages) {
         const playerVillages = [];
